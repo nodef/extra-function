@@ -1,4 +1,7 @@
-id
+SEE NOTES
+
+arguments -> args?
 backoff
 compose
-delay
+http://peter.michaux.ca/articles/lazy-function-definition-pattern
+https://css-tricks.com/debouncing-throttling-explained-examples/
