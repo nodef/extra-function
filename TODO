@@ -3,7 +3,6 @@ SEE NOTES
 - https://www.npmjs.com/package/regex-function-name
 - https://www.npmjs.com/package/regex-native-function
 
-arguments -> args?
 backoff
 compose
 http://peter.michaux.ca/articles/lazy-function-definition-pattern
@@ -12,5 +11,3 @@ https://thinkrx.io/rxjs/startWith/
 - toMap?
 - toCompare
 - iterate
-- isAsync
-- isGenerator
