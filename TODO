@@ -26,12 +26,6 @@ https://www.npmjs.com/package/tslib
 https://www.npmjs.com/package/redux
 https://www.npmjs.com/package/underscore
 
-https://www.npmjs.com/package/typical
-https://www.npmjs.com/package/jest-get-type
-https://www.npmjs.com/package/is-what
-https://www.npmjs.com/package/kind-of
-https://www.npmjs.com/package/@mangar2/types
-
 https://www.npmjs.com/package/fp-ts
 https://www.npmjs.com/package/recompose
 https://www.npmjs.com/package/iterative
@@ -47,15 +41,6 @@ https://www.npmjs.com/package/scramjet
 https://www.npmjs.com/package/scramjet-core
 
 https://www.npmjs.com/package/require-in-the-middle
-https://www.npmjs.com/package/p-all
-https://www.npmjs.com/package/p-cancelable
-https://www.npmjs.com/package/p-try
-https://www.npmjs.com/package/p-locate
-https://www.npmjs.com/package/p-retry
-https://www.npmjs.com/package/p-finally
-https://www.npmjs.com/package/p-limit
-https://www.npmjs.com/package/p-memoize
-https://www.npmjs.com/package/promise-retry
 
 https://www.npmjs.com/package/queue
 https://www.npmjs.com/package/before-after-hook
