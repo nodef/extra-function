@@ -6,6 +6,8 @@ compose
 http://peter.michaux.ca/articles/lazy-function-definition-pattern
 https://css-tricks.com/debouncing-throttling-explained-examples/
 https://thinkrx.io/rxjs/startWith/
+- toMap?
 - toCompare
-- toMap
-- function.iterate
+- iterate
+- isAsync
+- isGenerator
