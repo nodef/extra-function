@@ -137,3 +137,7 @@ https://www.npmjs.com/package/function-arguments
 https://www.npmjs.com/package/one-time
 https://www.npmjs.com/package/reduce-function-call
 https://www.npmjs.com/package/compose-middleware
+
+
+mtarh-cbind	function	Extra lightweight callbacks memorization
+argumentsof	function	Npm module which parses arguments of any callables.
