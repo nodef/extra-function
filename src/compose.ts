@@ -11,3 +11,4 @@ function compose(...xs: Function[]): Function {
 export default compose;
 // https://en.wikipedia.org/wiki/Function_composition
 // http://learnyouahaskell.com/higher-order-functions
+// https://www.npmjs.com/package/compose-function

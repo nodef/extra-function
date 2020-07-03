@@ -18,3 +18,5 @@ function memoize(x: Function, fc: combineFn=null, map: Map<any, any>=null): Func
   };
 }
 export default memoize;
+// https://www.npmjs.com/package/memoizee
+// https://www.npmjs.com/package/memoizerific

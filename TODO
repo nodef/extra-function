@@ -72,7 +72,6 @@ https://www.npmjs.com/package/@arrows/dispatch
 https://www.npmjs.com/package/@arrows/composition
 https://www.npmjs.com/package/@protobufjs/aspromise
 https://www.npmjs.com/package/fn-name
-https://www.npmjs.com/package/chain-function
 https://www.npmjs.com/package/@google-cloud/promisify
 https://www.npmjs.com/package/lru-memoizer
 https://www.npmjs.com/package/typed-function
@@ -82,9 +81,7 @@ https://www.npmjs.com/package/argx
 https://www.npmjs.com/package/make-arrow-function
 https://www.npmjs.com/package/parent-module
 https://www.npmjs.com/package/make-generator-function
-https://www.npmjs.com/package/throttleit
 https://www.npmjs.com/package/run-parallel
-https://www.npmjs.com/package/compose-function
 https://www.npmjs.com/package/fastseries
 https://www.npmjs.com/package/neo-async
 https://www.npmjs.com/package/caller-callsite
@@ -94,9 +91,6 @@ https://www.npmjs.com/package/arity-n
 https://www.npmjs.com/package/callsites
 https://www.npmjs.com/package/throat
 https://www.npmjs.com/package/generate-function
-https://www.npmjs.com/package/onetime
-https://www.npmjs.com/package/memoizee
-https://www.npmjs.com/package/once
 https://www.npmjs.com/package/es6-promisify
 https://www.npmjs.com/package/reusify
 https://www.npmjs.com/package/deasync
@@ -107,8 +101,6 @@ https://www.npmjs.com/package/run-async
 https://www.npmjs.com/package/thunky
 https://www.npmjs.com/package/function-bind
 https://www.npmjs.com/package/pify
-https://www.npmjs.com/package/is-function
-https://www.npmjs.com/package/memoizerific
 https://www.npmjs.com/package/superoverload
 https://www.npmjs.com/package/denodeify
 https://www.npmjs.com/package/await-lock
@@ -126,7 +118,6 @@ https://www.npmjs.com/package/degenerator
 https://www.npmjs.com/package/packhouse
 https://www.npmjs.com/package/fasy
 https://www.npmjs.com/package/function-arguments
-https://www.npmjs.com/package/one-time
 https://www.npmjs.com/package/reduce-function-call
 https://www.npmjs.com/package/compose-middleware
 

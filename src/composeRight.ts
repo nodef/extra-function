@@ -13,3 +13,4 @@ function composeRight(...xs: Function[]): Function {
 }
 export default composeRight;
 // https://stackoverflow.com/questions/1457140/haskell-composition-vs-fs-pipe-forward-operator
+// https://www.npmjs.com/package/chain-function

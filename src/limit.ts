@@ -12,3 +12,6 @@ function limit(x: Function, n: number=0, N: number=-1): Function {
   };
 }
 export default limit;
+// https://www.npmjs.com/package/one-time
+// https://www.npmjs.com/package/onetime
+// https://www.npmjs.com/package/once

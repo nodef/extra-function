@@ -16,4 +16,6 @@ function debounce(x: Function, t: number=0, T: number=-1): Function {
 }
 export default debounce;
 // https://github.com/lodash/lodash/blob/4.8.0-npm/debounce.js
+// https://github.com/jashkenas/underscore/commit/9e3e067f5025dbe5e93ed784f93b233882ca0ffe
+// https://css-tricks.com/debouncing-throttling-explained-examples/
 // TODO

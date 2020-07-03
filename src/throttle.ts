@@ -11,3 +11,4 @@ function throttle(x: Function, t: number=0): Function {
 export default throttle;
 // TODO
 // https://www.npmjs.com/package/throttle-debounce
+// https://www.npmjs.com/package/throttleit
