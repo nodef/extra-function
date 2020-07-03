@@ -12,3 +12,5 @@ function name(x: Function): string {
   return m[1];
 }
 export default name;
+// https://github.com/sindresorhus/fn-name/blob/master/index.js
+// https://www.npmjs.com/package/fn-name
