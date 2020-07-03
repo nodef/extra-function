@@ -9,3 +9,4 @@ function compose(...xs: Function[]): Function {
   return composeRight(...xs.reverse());
 }
 export default compose;
+// https://en.wikipedia.org/wiki/Function_composition
