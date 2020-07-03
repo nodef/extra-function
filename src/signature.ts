@@ -2,13 +2,13 @@ import RARROW from './RARROW';
 import RNORMAL from './RNORMAL';
 
 /**
- * Gives name of function.
+ * Gives signature of function.
  * @param x a function
+ * @returns name(parameters)
  */
-function name(x: Function): string {
-  if(x.name!=null) return x.name;
+function signature(x: Function): string {
   var s = x.toString();
   var m = RNORMAL.exec(s)||RARROW.exec(s);
-  return m[1];
+  return `${m[1]}(${m[2].trim()})`;
 }
-export default name;
+export default signature;
