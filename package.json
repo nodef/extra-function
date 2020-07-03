@@ -1,6 +1,6 @@
 {
   "name": "extra-function",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "description": "A function is a relation or expression involving one or more variables.",
   "main": "index.js",
   "scripts": {
