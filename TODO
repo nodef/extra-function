@@ -11,27 +11,25 @@ _.ary
 _.before
 _.bind
 _.bindKey
-_.curry
-_.curryRight
 _.debounce
 _.defer
 _.delay
 _.flip
-_.memoize
 _.negate
 _.once
 _.overArgs
 _.partial
 _.partialRight
 _.rearg
-_.rest
+
 _.spread
+_.unspread
+
 _.throttle
 _.unary
 _.wrap
 
 backoff
-compose
 
 http://peter.michaux.ca/articles/lazy-function-definition-pattern
 https://css-tricks.com/debouncing-throttling-explained-examples/
