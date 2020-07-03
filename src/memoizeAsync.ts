@@ -18,3 +18,4 @@ function memoizeAsync(x: Function, fc: combineFn=null, map: Map<any, any>=null):
   };
 }
 export default memoizeAsync;
+// https://www.npmjs.com/package/lru-memoizer

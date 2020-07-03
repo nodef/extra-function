@@ -10,3 +10,4 @@ function curry(x: Function, n: number=x.length): Function {
   };
 }
 export default curry;
+// https://www.npmjs.com/package/@spudly/curry

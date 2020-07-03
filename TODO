@@ -65,14 +65,12 @@ https://www.npmjs.com/package/queue
 https://www.npmjs.com/package/before-after-hook
 https://www.npmjs.com/package/ffi-napi
 https://www.npmjs.com/package/functools
-https://www.npmjs.com/package/async
 https://www.npmjs.com/package/predicate
 https://www.npmjs.com/package/@arrows/error
 https://www.npmjs.com/package/@arrows/dispatch
 https://www.npmjs.com/package/@arrows/composition
 https://www.npmjs.com/package/@protobufjs/aspromise
 https://www.npmjs.com/package/fn-name
-https://www.npmjs.com/package/@google-cloud/promisify
 https://www.npmjs.com/package/lru-memoizer
 https://www.npmjs.com/package/typed-function
 https://www.npmjs.com/package/is-generator-fn
@@ -90,33 +88,22 @@ https://www.npmjs.com/package/tiny-warning
 https://www.npmjs.com/package/arity-n
 https://www.npmjs.com/package/callsites
 https://www.npmjs.com/package/throat
-https://www.npmjs.com/package/generate-function
-https://www.npmjs.com/package/es6-promisify
 https://www.npmjs.com/package/reusify
 https://www.npmjs.com/package/deasync
 https://www.npmjs.com/package/async-limiter
-https://www.npmjs.com/package/debounce
-https://www.npmjs.com/package/is-arrow-function
-https://www.npmjs.com/package/run-async
 https://www.npmjs.com/package/thunky
 https://www.npmjs.com/package/function-bind
 https://www.npmjs.com/package/pify
-https://www.npmjs.com/package/superoverload
-https://www.npmjs.com/package/denodeify
 https://www.npmjs.com/package/await-lock
 https://www.npmjs.com/package/thenify
 https://www.npmjs.com/package/waait
 https://www.npmjs.com/package/poly-map
 https://www.npmjs.com/package/delayed
 https://www.npmjs.com/package/es6-arrow-function
-https://www.npmjs.com/package/try-to-catch
 https://www.npmjs.com/package/interceptable
 https://www.npmjs.com/package/each
-https://www.npmjs.com/package/@spudly/curry
 https://www.npmjs.com/package/degenerator
 
-https://www.npmjs.com/package/packhouse
-https://www.npmjs.com/package/fasy
 https://www.npmjs.com/package/function-arguments
 https://www.npmjs.com/package/reduce-function-call
 https://www.npmjs.com/package/compose-middleware
@@ -125,3 +112,20 @@ https://www.npmjs.com/package/compose-middleware
 mtarh-cbind	function	Extra lightweight callbacks memorization
 argumentsof	function	Npm module which parses arguments of any callables.
 DEPRECATE, LOG
+try catch
+https://www.npmjs.com/package/try-to-catch
+
+OVERLOAD
+https://www.npmjs.com/package/superoverload
+
+ASYNC_FROM
+https://www.npmjs.com/package/denodeify
+https://www.npmjs.com/package/@google-cloud/promisify
+https://www.npmjs.com/package/es6-promisify
+https://www.npmjs.com/package/run-async
+
+EXTRA-JS
+https://www.npmjs.com/package/generate-function
+
+ASYNC ARRAY
+https://www.npmjs.com/package/async
