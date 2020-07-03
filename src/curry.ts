@@ -4,11 +4,9 @@
  * @param n number of arguments (all)
  */
 function curry(x: Function, n: number=x.length): Function {
-  var a = [];
-  return () => {
-    Array.prototype.push(a, arguments);
-    if(a.length<n) return;
-    return x.apply(null, a.slice(0, n));
+  return (...as: any[]) => {
+    if(as.length>=n) return x(...as);
+    else return curry((...bs: any[]) => x(...as, ...bs), n-as.length);
   };
 }
 export default curry;
