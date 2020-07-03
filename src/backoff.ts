@@ -17,3 +17,4 @@ function backoff(x: Function, N: number=-1, t: number=1, T: number=-1, tf: numbe
   return (...as: any[]) => backoffRec(x, as, null, 0, N, t, T, tf);
 }
 export default backoff;
+// TODO

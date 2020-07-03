@@ -13,7 +13,6 @@ _.bind
 _.bindKey
 _.flip
 _.negate
-_.once
 _.overArgs
 _.partial
 _.partialRight
@@ -24,8 +23,6 @@ _.unspread
 
 _.unary
 _.wrap
-
-backoff
 
 http://peter.michaux.ca/articles/lazy-function-definition-pattern
 https://css-tricks.com/debouncing-throttling-explained-examples/
@@ -68,7 +65,6 @@ https://www.npmjs.com/package/queue
 https://www.npmjs.com/package/before-after-hook
 https://www.npmjs.com/package/ffi-napi
 https://www.npmjs.com/package/functools
-https://www.npmjs.com/package/function
 https://www.npmjs.com/package/async
 https://www.npmjs.com/package/predicate
 https://www.npmjs.com/package/@arrows/error
@@ -82,7 +78,6 @@ https://www.npmjs.com/package/lru-memoizer
 https://www.npmjs.com/package/typed-function
 https://www.npmjs.com/package/is-generator-fn
 https://www.npmjs.com/package/thunkify
-https://www.npmjs.com/package/throttle-debounce
 https://www.npmjs.com/package/argx
 https://www.npmjs.com/package/make-arrow-function
 https://www.npmjs.com/package/parent-module
@@ -138,3 +133,4 @@ https://www.npmjs.com/package/compose-middleware
 
 mtarh-cbind	function	Extra lightweight callbacks memorization
 argumentsof	function	Npm module which parses arguments of any callables.
+DEPRECATE, LOG

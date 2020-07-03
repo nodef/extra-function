@@ -9,3 +9,5 @@ function throttle(x: Function, t: number=0): Function {
   return debounce(x, t, t);
 }
 export default throttle;
+// TODO
+// https://www.npmjs.com/package/throttle-debounce
