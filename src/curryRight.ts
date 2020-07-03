@@ -10,3 +10,4 @@ function curryRight(x: Function, n: number=x.length): Function {
   };
 }
 export default curryRight;
+// https://www.npmjs.com/package/lodash.curryright
