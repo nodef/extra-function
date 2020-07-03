@@ -11,9 +11,6 @@ _.ary
 _.before
 _.bind
 _.bindKey
-_.debounce
-_.defer
-_.delay
 _.flip
 _.negate
 _.once
@@ -25,7 +22,6 @@ _.rearg
 _.spread
 _.unspread
 
-_.throttle
 _.unary
 _.wrap
 
