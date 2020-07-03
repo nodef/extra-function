@@ -1,5 +1,5 @@
 /**
- * Gives a curried version of function.
+ * Gives curried version of function.
  * @param x a function
  * @param n number of arguments [all]
  */
