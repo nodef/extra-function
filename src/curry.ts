@@ -1,7 +1,7 @@
 /**
  * Gives a curried version of function.
  * @param x a function
- * @param n number of arguments (all)
+ * @param n number of arguments [all]
  */
 function curry(x: Function, n: number=x.length): Function {
   return (...as: any[]) => {
