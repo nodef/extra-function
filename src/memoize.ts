@@ -1,4 +1,4 @@
-import ID from './IDENTITY';
+import ID from './ID';
 import type {combineFn} from './_types';
 
 /**
