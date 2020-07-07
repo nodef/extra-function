@@ -1,6 +1,6 @@
 {
   "name": "extra-function",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "A function is a relation or expression involving one or more variables.",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/nodef/extra-function#readme",
   "devDependencies": {
-    "extra-build": "^1.1.23"
+    "extra-build": "^1.1.26"
   }
 }
