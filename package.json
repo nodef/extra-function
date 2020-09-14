@@ -1,8 +1,13 @@
 {
   "name": "extra-function",
-  "version": "0.0.49",
+  "version": "0.0.50",
   "description": "A function is a relation or expression involving one or more variables.",
   "main": "index.js",
+  "module": "index.mjs",
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.mjs"
+  },
   "scripts": {
     "einit": "ebuild init",
     "ecode": "ebuild update --docs false",
