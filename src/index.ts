@@ -15,6 +15,12 @@ const GeneratorFunction: Function = Object.getPrototypeOf(function*(){}).constru
 // CONSTANTS
 // =========
 
+/** Match normal function, with name as $1 and parameters as $2. */
+const RNORMAL = /^function*?\s+([^\(]*)\(([^\)]*)\)/;
+/** Match arrow function, with parameters as $2. */
+const RARROW = /^()\(?([^\)=]*)\)?\s*=>/;
+
+
 /**
  * Return the arguments passed as a array.
  */
@@ -69,7 +75,7 @@ export function is(v: any): v is Function {
 
 
 /**
- * Check if value is a async function.
+ * Check if value is an async function.
  * @param v a value
  */
 export function isAsync(v: any): v is Function {
@@ -98,16 +104,6 @@ export function isGenerator(v: any): v is GeneratorFunction {
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction
 
-
-/**
- * Match normal function, with name as $1 and parameters as $2.
- */
-const RNORMAL = /^function*?\s+([^\(]*)\(([^\)]*)\)/;
-
-/**
- * Match arrow function, with parameters as $2.
- */
-const RARROW = /^()\(?([^\)=]*)\)?\s*=>/;
 
 /**
  * IGNORE: Check if value is an arrow function.
@@ -167,13 +163,89 @@ export function arity(x: Function): number {
 
 
 
+// BINDING THIS
+// ------------
+
+/**
+ * Generate a function with bound this-object, and optional prefix arguments.
+ * @param x a function
+ * @param thisArg this object to bind
+ * @param prefix prefix arguments
+ * @returns (...args) => this.x(...prefix, ...args)
+ */
+export function bind(x: Function, thisArg: any, ...prefix: any[]): Function {
+  return x.bind(thisArg, ...prefix);
+}
+
+
+
+
+// RESULT MANIPULATION
+// -------------------
+
+/**
+ * IGNORE: (use compose(fn, not) instead) Generate a result-negated version of a function.
+ * @param x a function
+ * @returns (...args) => !x(...args)
+ */
+function negate(x: Function): Function {
+  return (...args: any[]) => !x(...args);
+}
+
+
+
+
+// RESULT CACHING
+// --------------
+
+/**
+ * Resolve arguments into a unique key.
+ * @param args arguments
+ * @returns unique key
+ */
+export type Resolver = (...args: any[]) => any;
+
+
+/**
+ * Generate result-cached version of a function.
+ * @param x a function
+ * @param fr resolver ((...args) => unique key) [IDENTITY]
+ * @param cache result cache [Map()]
+ */
+export function memoize(x: Function, fr: Resolver=null, cache: Map<any, any>=null): Function {
+  var fr    = fr || IDENTITY;
+  var cache = cache || new Map();
+  return (...args: any[]) => {
+    var k = fr(...args);
+    if (cache.has(k)) return cache.get(k);
+    var v = x(...args);
+    cache.set(k, v);
+    return v;
+  };
+}
+// - https://www.npmjs.com/package/memoizee
+// - https://www.npmjs.com/package/memoizerific
+
+
+
+
 // PARAMETER MANIPULATION
 // ----------------------
 
 /**
+ * Generate a parameter-reversed version of a function.
+ * @param x a function
+ * @returns (p1, p2, ...) => x(..., p2, p1)
+ */
+ export function reverse(x: Function): Function {
+  return (...args: any[]) => x(...args.reverse());
+}
+
+
+/**
  * Generate a (first) parameter-spreaded version of a function.
  * @param x a function
- * @returns (...args) => x(args)
+ * @returns (p, q, ...) => x([p, q, ...])
  */
 export function spread(x: Function): Function {
   return (...args: any[]) => x(args);
@@ -183,7 +255,7 @@ export function spread(x: Function): Function {
 /**
  * Generate a (first) parameter-collapsed version of a function.
  * @param x a function
- * @returns (args) => x(...args)
+ * @returns ([p, q, ...]) => x(p, q, ...)
  */
 export function unspread(x: Function): Function {
   return (args: any[]) => x(...args);
@@ -193,11 +265,11 @@ export function unspread(x: Function): Function {
 /**
  * Generate a parameter-wrapped version of a function.
  * @param x a function
- * @param prefix prefix parameters
- * @param suffix suffix parameters []
+ * @param prefix prefix arguments
+ * @param suffix suffix arguments []
  * @returns (...args) => x(...prefix, ...args, ...suffix)
  */
-export function wrap(x: Function, prefix: any[], suffix: any[]=[]): Function {
+export function unwrap(x: Function, prefix: any[], suffix: any[]=[]): Function {
   return (...args: any[]) => x(...prefix, ...args, ...suffix);
 }
 
@@ -223,7 +295,7 @@ export function compose(...xs: Function[]): Function {
 /**
  * Compose functions together, such that result is piped forward.
  * @param xs functions (f, g)
- * @returns (f |> g), or g(f(x))
+ * @returns (f ▷ g), or g(f(x))
  */
 export function composeRight(...xs: Function[]): Function {
   return (...args: any[]) => {
@@ -241,7 +313,7 @@ export function composeRight(...xs: Function[]): Function {
 /**
  * Generate curried version of a function.
  * @param x a function
- * @param n number of arguments [all]
+ * @param n number of parameters [all]
  */
 export function curry(x: Function, n: number=x.length): Function {
   return (...args: any[]) => {
@@ -253,47 +325,14 @@ export function curry(x: Function, n: number=x.length): Function {
 
 
 /**
- * TODO: use flip(). Generate right-curried version of a function.
+ * Generate right-curried version of a function.
  * @param x a function
- * @param n number of arguments [all]
+ * @param n number of parameters [all]
  */
 export function curryRight(x: Function, n: number=x.length): Function {
-  return (...args: any[]) => {
-    if (args.length>=n) return x(...args.reverse());
-    else return curryRight((...rest: any[]) => x(...args.reverse(), ...rest.reverse()), n-args.length);
-  };
+  return curry(reverse(x), n);
 }
 // - https://www.npmjs.com/package/lodash.curryright
-
-
-
-
-// CACHING
-// -------
-
-// TODO: Key generator? Hash generator? Use default hash generator?
-type Combiner = (...args: any[]) => any;
-
-
-/**
- * Generate cached version of a function.
- * @param x a function
- * @param fc arguments combiner ((..args) => key) [IDENTITY]
- * @param cache result cache [new Map()]
- */
-export function memoize(x: Function, fc: Combiner=null, cache: Map<any, any>=null): Function {
-  var fc    = fc || IDENTITY;
-  var cache = cache || new Map();
-  return (...args: any[]) => {
-    var k = fc(...args);
-    if (cache.has(k)) return cache.get(k);
-    var v = x(...args);
-    cache.set(k, v);
-    return v;
-  };
-}
-// - https://www.npmjs.com/package/memoizee
-// - https://www.npmjs.com/package/memoizerific
 
 
 
