@@ -5,12 +5,62 @@ A collection of ways for transforming functions.<br>
 📰 [JSDoc](https://nodef.github.io/extra-function/),
 📘 [Wiki](https://github.com/nodef/extra-function/wiki/).
 
-A function is a relation or expression involving one or more variables.
+A **function** is a **set of statements** that *performs a task* or *calculates*
+*a value*. It can accept some **parameters**, and may define some **local**
+**variables** necessary for performing the desired *operation*. These *parameters*
+and *local variables* are contained in the **scope of the function**, and
+*cannot* be accessed from the *outside*. However, a function can access
+variables *external to itself* (as long as they are not *overridden*), such as
+*global variables* or *variables* in the scope this function is *encapsulated*
+*in*. A **nested function** can access *free variables* that are defined in
+*outer scopes*, even when it is being *invoked* **away** from where it is
+*defined*. It does this by **capturing** the *free variables* (by *reference*)
+into a **closure** [(1)]. *Closure*, *arrow functions*, and more, are
+*functional language features* based on [lambda calculus].
+
+This package includes a number of methods to *transform functions*. This enables
+you to obtain a desired function by transforming the behavior of existing
+functions (*without actually executing them*). The **result** of a function can
+be manipulated with [negate]. In case a *pure* function is expensive, its
+results can **cached** with [memoize]. **Parameters** of a function can be
+manipulated with [reverse], [spread], [unspread], [wrap], [unwrap]. [reverse]
+flips the order of parameters, [spread] spreads the first array parameter of a
+function, [unspread] combines all parameters into the first parameter (array),
+[wrap] adds ignored parameters to the left/right of a function's parameters, and
+[unwrap] removes common prefix and suffix parameters to a function (by passing
+known constant values as prefix/suffix). If you want some **functional**
+**behavior**, [compose], [composeRight], [curry], and [curryRight] can be used. If
+you are unfamiliar, [Haskell] is a great purely functional language, and there
+is great [haskell beginner guide] to learn from.
+
+To control invocation **time** of a function, use [delay]. A function can be
+**rate controlled** with [limitUse], [debounce], [debounceEarly], [throttle],
+[throttleEarly]. [limitUse] controls the number of times a function can be
+called, and is useful when you want to enforce a function to be called only
+*once*, the first n times (*before*), or *after* n times. [debounce] and
+[debounceEarly] prevent the invocation of a function during **hot** periods
+(when there are too many calls), and can be used for example to issue AJAX
+request after user input has stopped (for certain delay time). [throttle] and
+[throttleEarly] can be used to limit the rate of invocation of a function, and
+can be used for example to minimize system usage when a user is [constantly
+refreshing a webpage]. Except [limitUse], all *rate/time control* methods can be
+*flushed* (`flush()`) to invoke the target function immediately, or *cleared*
+(`clear()`) to disable invocation of the target function.
+
+In addition, use [is], [isAsync], [isGenerator], [signature], [name],
+[parameters], and [arity] to obtain metadata (about) information on a function.
+A few generic functions are also included: [ARGUMENTS], [NOOP], [IDENTITY],
+[COMPARE].
 
 This package is available in both *Node.js* and *Web* formats. The web format is
-exposed as `extra_math` standalone variable and can be loaded from [jsDelivr CDN].
+exposed as `extra_function` standalone variable and can be loaded from [jsDelivr CDN].
 
-[jsDelivr CDN]: https://cdn.jsdelivr.net/npm/extra-math.web/index.js
+[(1)]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
+[lambda calculus]: https://en.wikipedia.org/wiki/Lambda_calculus
+[Haskell]: https://www.haskell.org
+[haskell beginner guide]: http://learnyouahaskell.com
+[constantly refreshing a webpage]: https://tenor.com/view/social-network-mark-zuckerberg-refresh-movie-jesse-eisenberg-gif-12095762
+[jsDelivr CDN]: https://cdn.jsdelivr.net/npm/extra-function.web/index.js
 
 > Stability: [Experimental](https://www.youtube.com/watch?v=L1j93RnIxEo).
 
@@ -18,20 +68,20 @@ exposed as `extra_math` standalone variable and can be loaded from [jsDelivr CDN
 
 
 ```javascript
-const math = require('extra-math');
-// import * as math from "extra-math";
-// import * as math from "https://unpkg.com/extra-math/index.mjs"; (deno)
+const funcxion = require('extra-function');
+// import * as funcxion from "extra-function";
+// import * as funcxion from "https://unpkg.com/extra-function/index.mjs"; (deno)
 
-math.sum(1, 2, 3, 4);
+funcxion.sum(1, 2, 3, 4);
 // → 10
 
-math.median(1, 7, 8);
+funcxion.median(1, 7, 8);
 // → 7
 
-math.variance(1, 2, 3, 4);
+funcxion.variance(1, 2, 3, 4);
 // → 1.25
 
-math.lcm(2, 3, 4);
+funcxion.lcm(2, 3, 4);
 // → 12
 ```
 
@@ -43,7 +93,42 @@ math.lcm(2, 3, 4);
 
 | Property | Description |
 |  ----  |  ----  |
-| [rem] | Find the remainder of x/y with sign of x (truncated division). |
+| [ARGUMENTS] | Return the arguments passed as a array. |
+| [NOOP] | Do nothing. |
+| [IDENTITY] | Return the same (first) value. |
+| [COMPARE] | Compare two values. |
+|  |  |
+| [is] | Check if value is a function. |
+| [isGenerator] | Check if value is a generator function. |
+| [signature] | Get the signature of a function. |
+| [name] | Get the name of a function. |
+| [parameters] | Get the parameter names of a function. |
+| [arity] | Get the number of parameters of a function. |
+|  |  |
+| [bind] | Generate a function with bound this-object, and optional prefix arguments. |
+|  |  |
+| [negate] | Generate a result-negated version of a function. |
+|  |  |
+| [memoize] | Generate result-cached version of a function. |
+|  |  |
+| [reverse] | Generate a parameter-reversed version of a function. |
+| [spread] | Generate a (first) parameter-spreaded version of a function. |
+| [unspread] | Generate a (first) parameter-collapsed version of a function. |
+| [wrap] | Generate a parameter-wrapped version of a function. |
+| [unwrap] | Generate a parameter-unwrapped version of a function. |
+|  |  |
+| [compose] | Compose functions together, in applicative order. |
+| [composeRight] | Compose functions together, such that result is piped forward. |
+| [curry] | Generate curried version of a function. |
+| [curryRight] | Generate right-curried version of a function. |
+|  |  |
+| [delay] | Generate delayed version of a function. |
+|  |  |
+| [limitUse] | Generate limited-use version of a function. |
+| [debounce] | Generate debounced version of a function. |
+| [debounceEarly] | Generate leading-edge debounced version of a function. |
+| [throttle] | Generate throttled version of a function. |
+| [throttleEarly] | Generate leading-edge throttled version of a function. |
 
 <br>
 <br>
@@ -58,3 +143,33 @@ math.lcm(2, 3, 4);
 
 
 [![](https://img.youtube.com/vi/dW8Cy6WrO94/maxresdefault.jpg)](https://www.youtube.com/watch?v=dW8Cy6WrO94)<br>
+
+
+[ARGUMENTS]: https://nodef.github.io/extra-function/modules.html#ARGUMENTS
+[NOOP]: https://nodef.github.io/extra-function/modules.html#NOOP
+[IDENTITY]: https://nodef.github.io/extra-function/modules.html#IDENTITY
+[COMPARE]: https://nodef.github.io/extra-function/modules.html#COMPARE
+[is]: https://nodef.github.io/extra-function/modules.html#is
+[isGenerator]: https://nodef.github.io/extra-function/modules.html#isGenerator
+[signature]: https://nodef.github.io/extra-function/modules.html#signature
+[name]: https://nodef.github.io/extra-function/modules.html#name
+[parameters]: https://nodef.github.io/extra-function/modules.html#parameters
+[arity]: https://nodef.github.io/extra-function/modules.html#arity
+[bind]: https://nodef.github.io/extra-function/modules.html#bind
+[negate]: https://nodef.github.io/extra-function/modules.html#negate
+[memoize]: https://nodef.github.io/extra-function/modules.html#memoize
+[reverse]: https://nodef.github.io/extra-function/modules.html#reverse
+[spread]: https://nodef.github.io/extra-function/modules.html#spread
+[unspread]: https://nodef.github.io/extra-function/modules.html#unspread
+[wrap]: https://nodef.github.io/extra-function/modules.html#wrap
+[unwrap]: https://nodef.github.io/extra-function/modules.html#unwrap
+[compose]: https://nodef.github.io/extra-function/modules.html#compose
+[composeRight]: https://nodef.github.io/extra-function/modules.html#composeRight
+[curry]: https://nodef.github.io/extra-function/modules.html#curry
+[curryRight]: https://nodef.github.io/extra-function/modules.html#curryRight
+[delay]: https://nodef.github.io/extra-function/modules.html#delay
+[limitUse]: https://nodef.github.io/extra-function/modules.html#limitUse
+[debounce]: https://nodef.github.io/extra-function/modules.html#debounce
+[debounceEarly]: https://nodef.github.io/extra-function/modules.html#debounceEarly
+[throttle]: https://nodef.github.io/extra-function/modules.html#throttle
+[throttleEarly]: https://nodef.github.io/extra-function/modules.html#throttleEarly
