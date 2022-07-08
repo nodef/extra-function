@@ -366,14 +366,31 @@ export function curryRight(x: Function, n: number=x.length): Function {
 // TIME CONTROL
 // ------------
 
+/** Invocation control for time/rate-controlled functions. */
+export interface InvocationControl {
+  /** Disable invoking of target function. */
+  clear: () => void;
+  /** Immediately invoke target function. */
+  flush: () => void;
+}
+
+
 /**
  * Generate delayed version of a function.
  * @param x a function
  * @param t delay time (ms)
- * @returns (...args) => x(...args) after t ms
+ * @returns (...args) => invocation control
  */
 export function delay(x: Function, t: number): Function {
-  return (...args: any[]) => setTimeout(x, t, ...args);
+  var savedArgs: any[];
+  var h = null;
+  function clear() { clearTimeout(h); h = null; }
+  function flush() { x(...savedArgs); clear(); }
+  return (...args: any[]): InvocationControl => {
+    savedArgs = args;
+    h = setTimeout(flush, t);
+    return {clear, flush};
+  }
 }
 
 
@@ -408,22 +425,22 @@ export function limitUse(x: Function, start: number, end: number=-1): Function {
  * @param x a function
  * @param t delay time (ms)
  * @param T max delay time [-1 ⇒ none]
- * @returns (...args) => [delay timeout, max-delay timeout]
+ * @returns (...args) => invocation control
  */
 export function debounce(x: Function, t: number, T: number=-1): Function {
-  var savedArgs: any;
-  var h  = null, H = null;
-  var fn = () => {
-    x(...savedArgs);
+  var savedArgs: any[];
+  var h = null, H = null;
+  function clear() {
     clearTimeout(h);
     clearTimeout(H);
     h = H = null;
-  };
-  return (...args: any[]) => {
+  }
+  function flush() { x(...savedArgs); clear(); };
+  return (...args: any[]): InvocationControl => {
     savedArgs = args;
-    if (T>=0)  H = H || setTimeout(fn, T);
-    if (T<0 || t<T) { clearTimeout(h); h = setTimeout(fn, t); }
-    return [h, H];
+    if (T>=0)  H = H || setTimeout(flush, T);
+    if (T<0 || t<T) { clearTimeout(h); h = setTimeout(flush, t); }
+    return {clear, flush};
   };
 }
 // - https://github.com/lodash/lodash/blob/4.8.0-npm/debounce.js
@@ -437,16 +454,17 @@ export function debounce(x: Function, t: number, T: number=-1): Function {
  * @param x a function
  * @param t delay time (ms)
  * @param T max delay time [-1 ⇒ none]
- * @returns (...args) => [delay timeout, max-delay timeout]
+ * @returns (...args) => invocation control
  */
 export function debounceEarly(x: Function, t: number, T: number=-1): Function {
-  var h  = null, H = null;
-  var fn = () => { h = H = null; };
-  return (...args: any[]) => {
+  var h = null, H = null;
+  function clear() { h = H = null; }
+  function flush() { clear(); }
+  return (...args: any[]): InvocationControl => {
     if (!h && !H) x(...args);
-    if (T>=0)  H = H || setTimeout(fn, T);
-    if (T<0 || t<T) { clearTimeout(h); h = setTimeout(fn, t); }
-    return [h, H];
+    if (T>=0)  H = H || setTimeout(flush, T);
+    if (T<0 || t<T) { clearTimeout(h); h = setTimeout(flush, t); }
+    return {clear, flush};
   };
 }
 // - https://github.com/lodash/lodash/blob/4.8.0-npm/debounce.js
@@ -459,16 +477,17 @@ export function debounceEarly(x: Function, t: number, T: number=-1): Function {
  * Generate throttled version of a function.
  * @param x a function
  * @param t wait time (ms)
- * @returns (...args) => wait timeout
+ * @returns (...args) => invocation control
  */
 export function throttle(x: Function, t: number): Function {
-  var savedArgs: any;
-  var h  = null;
-  var fn = () => { x(...savedArgs); h = null; };
-  return (...args: any[]) => {
+  var savedArgs: any[];
+  var h = null;
+  function clear() { h = null; }
+  function flush() { x(...savedArgs); clear(); }
+  return (...args: any[]): InvocationControl => {
     savedArgs = args;
-    h = h || setTimeout(fn, t);
-    return h;
+    h = h || setTimeout(flush, t);
+    return {clear, flush};
   };
 }
 // - https://www.npmjs.com/package/throttle-debounce
@@ -479,21 +498,23 @@ export function throttle(x: Function, t: number): Function {
  * Generate leading-edge throttled version of a function.
  * @param x a function
  * @param t wait time (ms)
- * @returns (...args) => wait timeout
+ * @returns (...args) => invocation control
  */
 export function throttleEarly(x: Function, t: number): Function {
-  var h  = null;
-  var fn = () => { h = null; };
-  return (...args: any[]) => {
+  var h = null;
+  function clear() { h = null; }
+  function flush() { clear(); }
+  return (...args: any[]): InvocationControl => {
     if (!h) x(...args);
-    h = h || setTimeout(fn, t);
-    return h;
+    h = h || setTimeout(flush, t);
+    return {clear, flush};
   };
 }
 // - https://www.npmjs.com/package/throttle-debounce
 // - https://www.npmjs.com/package/throttleit
 
 
+// TODO: Is a generator function better for this?
 function backoffRetryRec(x: Function, args: any[], err: any, n: number, N: number, t: number, T: number, tf: number): void {
   if (N>=0 && n>=N) throw err;
   if (T>=0 && t>=T) throw err;
@@ -502,14 +523,14 @@ function backoffRetryRec(x: Function, args: any[], err: any, n: number, N: numbe
 }
 
 /**
- * Generate exponential-backoff-retried version of a function.
+ * TODO: Generate exponential-backoff-retried version of a function.
  * @param x a function
- * @param N maximum retries [-1 => none]
- * @param t initial retry time [1 ms]
- * @param T maximum retry time [-1 => none]
+ * @param N maximum retries (-1 ⇒ unlimited)
+ * @param t initial retry time (1 ms)
+ * @param T maximum retry time [-1 ⇒ none]
  * @param tf retry time factor [2]
  */
-export function backoffRetry(x: Function, N: number=-1, t: number=1, T: number=-1, tf: number=2): Function {
+function backoffRetry(x: Function, N: number, t: number, T: number=-1, tf: number=2): Function {
   return (...args: any[]) => backoffRetryRec(x, args, null, 0, N, t, T, tf);
 }
 // - TODO
