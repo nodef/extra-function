@@ -407,10 +407,10 @@ export function delay(x: Function, t: number): Function {
  * @returns (...args) => x(...args) from [start:end] calls
  */
 export function limitUse(x: Function, start: number, end: number=-1): Function {
-  var i = -1, a: any;
+  var i = -1;
   return (...args: any[]) => {
-    if ((++i<start)===(i<end)) return a;
-    return a = x(...args);
+    if ((++i<start)===(i<end)) return;
+    return x(...args);
   };
 }
 // - https://www.npmjs.com/package/one-time
