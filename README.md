@@ -75,13 +75,16 @@ const funcxion = require('extra-function');
 // import * as funcxion from "extra-function";
 // import * as funcxion from "https://unpkg.com/extra-function/index.mjs"; (deno)
 
-funcxion.composeRight(x => x*x, x => x+2);
+var a = funcxion.composeRight(x => x*x, x => x+2);
+a(10);
 // → 102
 
-funcxion.curry((x, y) => x+y);
+var a = funcxion.curry((x, y) => x+y);
+a(2)(3);
 // → 7
 
-funcxion.unspread(Math.max);
+var a = funcxion.unspread(Math.max);
+a([2, 3, 1]);
 // → 1.25
 
 funcxion.parameters((x, y) => x+y);
