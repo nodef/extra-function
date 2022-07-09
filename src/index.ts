@@ -18,9 +18,9 @@ const GeneratorFunction: Function = Object.getPrototypeOf(function*(){}).constru
 // =========
 
 /** Match normal function, with name as $1 and parameters as $2. */
-const RNORMAL = /^function*?\s+([^\(]*)\(([^\)]*)\)/;
+const RNORMAL = /^(?:async\s+)?function\*?\s+([^\(]*)\(([^\)]*)\)/;
 /** Match arrow function, with parameters as $2. */
-const RARROW = /^()\(?([^\)=]*)\)?\s*=>/;
+const RARROW = /^(?:async\s+)?()\(?([^\)=]*)\)?\s*=>/;
 
 
 /**
