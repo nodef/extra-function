@@ -173,6 +173,7 @@ funcxion.parameters((x, y) => x+y);
 
 
 [![](https://img.youtube.com/vi/vzfy4EKwG_Y/maxresdefault.jpg)](https://www.youtube.com/watch?v=vzfy4EKwG_Y)<br>
+[![DOI](https://zenodo.org/badge/249692645.svg)](https://zenodo.org/badge/latestdoi/249692645)
 
 
 [ARGUMENTS]: https://nodef.github.io/extra-function/modules.html#ARGUMENTS
