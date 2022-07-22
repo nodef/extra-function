@@ -1,6 +1,6 @@
 {
   "name": "extra-function",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A collection of ways for transforming functions.",
   "main": "index.js",
   "module": "index.mjs",
@@ -12,7 +12,8 @@
   "scripts": {
     "test": "exit",
     "build": "node ./build",
-    "deploy": "node ./build deploy"
+    "publish-docs": "node ./build publish-docs",
+    "publish-packages": "node ./build publish-packages"
   },
   "keywords": [
     "extra",
@@ -31,7 +32,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "extra-build": "^2.1.31",
+    "extra-build": "^2.2.13",
     "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-dts": "^4.2.2"
   }
