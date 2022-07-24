@@ -17,10 +17,10 @@ const GeneratorFunction: Function = Object.getPrototypeOf(GENERATOR_NOOP).constr
 // CONSTANTS
 // =========
 
-/** Match normal function, with name as $1 and parameters as $2. */
-const RNORMAL = /^(?:async\s+)?function\*?\s+([^\(]*)\(([^\)]*)\)/;
-/** Match arrow function, with parameters as $2. */
-const RARROW = /^(?:async\s+)?()\(?([^\)=]*)\)?\s*=>/;
+/** Match normal function, with [async, *, name, parameters]. */
+const RNORMAL = /^(async\s)?\s*function(\*)?\s*([^\(]*)\s*\(([^\)]*)\)/;
+/** Match arrow function, with [async,,, parameters]. */
+const RARROW = /^(async\s)?\s*()()\(?([^\)]*)\)?\s*=>/;
 
 
 /**
@@ -138,7 +138,7 @@ function isArrow(x: any): boolean {
 export function signature(x: Function): string {
   var s = x.toString();
   var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return `${m[1]}(${m[2].trim()})`;
+  return `${m[1]||""}function${m[2]||""} ${m[3]||""}(${m[4].trim()})`;
 }
 
 
@@ -151,7 +151,7 @@ export function name(x: Function): string {
   if (x.name!=null) return x.name;
   var s = x.toString();
   var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return m[1];
+  return m[3] || "";
 }
 // - https://github.com/sindresorhus/fn-name/blob/master/index.js
 // - https://www.npmjs.com/package/fn-name
@@ -165,7 +165,7 @@ export function name(x: Function): string {
 export function parameters(x: Function): string[] {
   var s = x.toString();
   var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return m[2]? m[2].trim().split(/[,\s]+/g) : [];
+  return m[4]? m[4].trim().split(/,\s*/g).map(p => p.replace(/\W.*/, "")) : [];
 }
 
 
@@ -287,7 +287,7 @@ export function unspread(x: Function): Function {
  * @param end actual parameter end [end]
  * @returns (...args) => x(...args[start:end])
  */
-export function wrap(x: Function, start: number, end: number=x.length): Function {
+export function wrap(x: Function, start: number, end: number=Number.MAX_SAFE_INTEGER): Function {
   return (...args: any[]) => x(...args.slice(start, end));
 }
 
