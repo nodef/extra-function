@@ -5,23 +5,18 @@ SEE NOTES
 - https://www.npmjs.com/package/regex-native-function
 - https://github.com/hipstersmoothie/compose-tiny
 
-_.after
 _.ary
-_.before
-_.bind
 _.bindKey
 _.flip
-_.negate
 _.overArgs
 _.partial
 _.partialRight
 _.rearg
-
 _.spread
 _.unspread
-
 _.unary
 _.wrap
+_.restArguments
 
 http://peter.michaux.ca/articles/lazy-function-definition-pattern
 https://css-tricks.com/debouncing-throttling-explained-examples/

@@ -1,3 +1,4 @@
+const fs    = require('fs');
 const build = require('extra-build');
 
 const owner  = 'nodef';
@@ -88,9 +89,14 @@ function publishPackages(ds) {
 
 
 // Generate wiki for all exported symbols.
-function generateWiki() {
-  // createWikiFiles();
-  // generateWikiFiles();
+function generateWiki(ds) {
+  var rkind = /namespace|function/i;
+  for (var d of ds) {
+    var f = `wiki/${d.name}.md`;
+    if (!rkind.test(d.kind)) continue;
+    if (fs.existsSync(f)) continue;
+    build.writeFileText(f, build.wikiMarkdown(d));
+  }
 }
 
 

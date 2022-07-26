@@ -35,6 +35,7 @@ export function ARGUMENTS(...args: any[]): any[] {
 
 /**
  * Do nothing.
+ * @param args arguments (ignored)
  */
 export function NOOP(...args: any[]): void {
 }

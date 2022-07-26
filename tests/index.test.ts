@@ -110,9 +110,9 @@ test("is", () => {
 
 
 test("isAsync", () => {
-  var a = isAsync(async () => 0)
+  var a = isAsync(async () => 0);
   expect(a).toBe(true);
-  var a = isAsync(() => 0)
+  var a = isAsync(() => 0);
   expect(a).toBe(false);
 });
 
@@ -233,16 +233,16 @@ test("reverse", () => {
   function divide(x: number, y: number) {
     return x/y;
   }
-  var fd = reverse(divide);
-  expect(fd(2, 4)).toBe(2);
-  expect(fd(2, 6)).toBe(3);
-  expect(fd(2, 8)).toBe(4);
+  var fn = reverse(divide);
+  expect(fn(2, 4)).toBe(2);
+  expect(fn(2, 6)).toBe(3);
+  expect(fn(2, 8)).toBe(4);
   var array = [1];
   function push(...args: number[]) {
     array.push(...args);
   }
-  var fp = reverse(push);
-  fp(2, 3, 4);  // push(2, 3, 4) in reverse order
+  var fn = reverse(push);
+  fn(2, 3, 4);  // push(2, 3, 4) in reverse order
   expect(array).toStrictEqual([1, 4, 3, 2]);
 });
 
