@@ -2,12 +2,12 @@
 // =====
 
 // Represents an async function (async function).
-const AsyncFunction: Function = Object.getPrototypeOf(ASYNC_NOOP).constructor;
+const AsyncFunction: Function = Object.getPrototypeOf(NOOP_ASYNC).constructor;
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 
 // Represents a generator function (function*).
-const GeneratorFunction: Function = Object.getPrototypeOf(GENERATOR_NOOP).constructor;
+const GeneratorFunction: Function = Object.getPrototypeOf(NOOP_GENERATOR).constructor;
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 
@@ -36,13 +36,13 @@ export function ARGUMENTS(...args: any[]): any[] {
 /**
  * Do nothing.
  */
-export function NOOP(): void {
+export function NOOP(...args: any[]): void {
 }
 
-async function ASYNC_NOOP(): Promise<void> {
+async function NOOP_ASYNC(...args: any[]): Promise<void> {
 }
 
-function* GENERATOR_NOOP(): Generator<never, void, unknown> {
+function* NOOP_GENERATOR(...args: any[]): Generator<never, void, unknown> {
 }
 
 
@@ -124,11 +124,16 @@ export function isGenerator(v: any): v is GeneratorFunction {
  * @param x a value
  * @returns is arrow function?
  */
-function isArrow(x: any): boolean {
-  if (typeof x!=='function') return false;
-  else return RARROW.test(x.toString());
-}
+// function isArrow(x: any): boolean {
+//   if (typeof x!=='function') return false;
+//   else return RARROW.test(x.toString());
+// }
 
+
+// Get parameter names from regexp matches.
+function getParameters(m: RegExpExecArray): string[] {
+  return m[4]? m[4].trim().split(/,\s*/g).map(p => p.replace(/\W.*/, "")) : [];
+}
 
 /**
  * Get the signature of a function.
@@ -138,7 +143,7 @@ function isArrow(x: any): boolean {
 export function signature(x: Function): string {
   var s = x.toString();
   var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return `${m[1]||""}function${m[2]||""} ${m[3]||""}(${m[4].trim()})`;
+  return `${m[1]||""}function${m[2]||""} ${m[3]||""}(${getParameters(m).join(", ")})`;
 }
 
 
@@ -165,7 +170,7 @@ export function name(x: Function): string {
 export function parameters(x: Function): string[] {
   var s = x.toString();
   var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return m[4]? m[4].trim().split(/,\s*/g).map(p => p.replace(/\W.*/, "")) : [];
+  return getParameters(m);
 }
 
 
@@ -521,12 +526,12 @@ export function throttleEarly(x: Function, t: number): Function {
 
 
 // TODO: Is a generator function better for this?
-function backoffRetryRec(x: Function, args: any[], err: any, n: number, N: number, t: number, T: number, tf: number): void {
-  if (N>=0 && n>=N) throw err;
-  if (T>=0 && t>=T) throw err;
-  try { return x(...args, err); }
-  catch(e) { setTimeout(() => backoffRetryRec(x, args, e, n+1, N, t*tf, T, tf), t); }
-}
+// function backoffRetryRec(x: Function, args: any[], err: any, n: number, N: number, t: number, T: number, tf: number): void {
+//   if (N>=0 && n>=N) throw err;
+//   if (T>=0 && t>=T) throw err;
+//   try { return x(...args, err); }
+//   catch(e) { setTimeout(() => backoffRetryRec(x, args, e, n+1, N, t*tf, T, tf), t); }
+// }
 
 /**
  * TODO: Generate exponential-backoff-retried version of a function.
@@ -536,7 +541,7 @@ function backoffRetryRec(x: Function, args: any[], err: any, n: number, N: numbe
  * @param T maximum retry time [-1 ⇒ none]
  * @param tf retry time factor [2]
  */
-function backoffRetry(x: Function, N: number, t: number, T: number=-1, tf: number=2): Function {
-  return (...args: any[]) => backoffRetryRec(x, args, null, 0, N, t, T, tf);
-}
+// function backoffRetry(x: Function, N: number, t: number, T: number=-1, tf: number=2): Function {
+//   return (...args: any[]) => backoffRetryRec(x, args, null, 0, N, t, T, tf);
+// }
 // - TODO

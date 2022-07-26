@@ -177,6 +177,9 @@ funcxion.parameters((x, y) => x+y);
 
 [![](https://img.youtube.com/vi/vzfy4EKwG_Y/maxresdefault.jpg)](https://www.youtube.com/watch?v=vzfy4EKwG_Y)<br>
 [![DOI](https://zenodo.org/badge/249692645.svg)](https://zenodo.org/badge/latestdoi/249692645)
+[![Coverage Status](https://coveralls.io/repos/github/nodef/extra-function/badge.svg?branch=master)](https://coveralls.io/github/nodef/extra-function?branch=master)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/4848d3e9557e4144c919/test_coverage)](https://codeclimate.com/github/nodef/extra-function/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4848d3e9557e4144c919/maintainability)](https://codeclimate.com/github/nodef/extra-function/maintainability)
 
 
 [ARGUMENTS]: https://nodef.github.io/extra-function/modules.html#ARGUMENTS

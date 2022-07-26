@@ -1,5 +1,9 @@
 import {sleep}         from "extra-sleep";
 import * as funcxion   from "../src";
+import {ARGUMENTS}     from "../src";
+import {NOOP}          from "../src";
+import {IDENTITY}      from "../src";
+import {COMPARE}       from "../src";
 import {is}            from "../src";
 import {isAsync}       from "../src";
 import {isGenerator}   from "../src";
@@ -57,6 +61,42 @@ test("example1", () => {
 
 
 
+test("ARGUMENTS", () => {
+  var a = ARGUMENTS(1, 2);
+  expect(a).toStrictEqual([1, 2]);
+  var a = ARGUMENTS("a", "b");
+  expect(a).toStrictEqual(["a", "b"]);
+});
+
+
+test("NOOP", () => {
+  var a = NOOP(1, 2);
+  expect(a).toBeUndefined();
+  var a = NOOP("a", "b");
+  expect(a).toBeUndefined();
+});
+
+
+test("IDENTITY", () => {
+  var a = IDENTITY(1);
+  expect(a).toBe(1);
+  var b = IDENTITY("a");
+  expect(b).toBe("a");
+});
+
+
+test("COMPARE", () => {
+  var a = COMPARE(1, 2);
+  expect(a).toBe(-1);
+  var a = COMPARE(2, 2);
+  expect(a).toBe(0);
+  var a = COMPARE(3, 2);
+  expect(a).toBe(1);
+  var a = COMPARE("a", "b");
+  expect(a).toBe(-1);
+});
+
+
 test("is", () => {
   var a = is(Object.keys);
   expect(a).toBe(true);
@@ -90,36 +130,34 @@ test("isGenerator", () => {
 
 
 test("signature", () => {
-  // var a = signature(delay);
-  // expect(a).toBe("function delay(x, t)");
-  // var a = signature(debounce);
-  // expect(a).toBe("function debounce()");
+  var a = signature(delay);
+  expect(a).toBe("function delay(x, t)");
+  var a = signature(debounce);
+  expect(a).toBe("function debounce(x, t, T)");
 });
 
 
 test("name", () => {
-  // var a = name(delay);
-  // expect(a).toBe("delay");
-  // var a = name(debounce);
-  // expect(a).toBe("debounce");
+  var a = name(delay);
+  expect(a).toBe("delay");
+  var a = name(debounce);
+  expect(a).toBe("debounce");
 });
 
 
 test("parameters", () => {
-  // var a = parameters(delay);
-  // expect(a).toStrictEqual(["x", "t"]);
-  // var a = parameters(debounce);
-  // expect(a).toStrictEqual(["x", "t", "T"]);
+  var a = parameters(delay);
+  expect(a).toStrictEqual(["x", "t"]);
+  var a = parameters(debounce);
+  expect(a).toStrictEqual(["x", "t", "T"]);
 });
 
 
 test("arity", () => {
-  // var a = arity(negate);
-  // expect(a).toBe(1);
-  // var a = arity(curry);
-  // expect(a).toBe(2);
-  // var a = arity(limitUse);
-  // expect(a).toBe(3);
+  var a = arity(() => 0);
+  expect(a).toBe(0);
+  var a = arity((x, y) => 0);
+  expect(a).toBe(2);
 });
 
 
@@ -254,6 +292,8 @@ test("unwrap", () => {
 
 
 test("compose", () => {
+  var fn = compose();
+  expect(fn()).toBeUndefined();
   var fn = compose(Math.sqrt, Math.abs);
   expect(fn(-64)).toBe(8);    // Math.sqrt(Math.abs(-64))
   var fn = compose(Math.sqrt, Math.min);
@@ -262,6 +302,8 @@ test("compose", () => {
 
 
 test("composeRight", () => {
+  var fn = composeRight();
+  expect(fn()).toBeUndefined();
   var fn = composeRight(Math.abs, Math.sqrt);
   expect(fn(-64)).toBe(8);    // Math.sqrt(Math.abs(-64))
   var fn = composeRight(Math.min, Math.sqrt);
@@ -405,6 +447,39 @@ test("debounce.2", async () => {
 });
 
 
+test("debounce.3", async () => {
+  var count = 0;
+  var fn = debounce(() => ++count, 1500, 3500);
+  setTimeout(fn, 0);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 3000);
+  setTimeout(fn, 4000);
+  setTimeout(fn, 6000);
+  // `count` incremented after 3.5s
+  // `count` incremented after 5.5s
+  // `count` incremented after 7.5s
+  setTimeout(() => expect(count).toBe(0), 200);
+  setTimeout(() => expect(count).toBe(0), 700);
+  setTimeout(() => expect(count).toBe(0), 1200);
+  setTimeout(() => expect(count).toBe(0), 1700);
+  setTimeout(() => expect(count).toBe(0), 2200);
+  setTimeout(() => expect(count).toBe(0), 2700);
+  setTimeout(() => expect(count).toBe(0), 3200);
+  setTimeout(() => expect(count).toBe(1), 3700);
+  setTimeout(() => expect(count).toBe(1), 4200);
+  setTimeout(() => expect(count).toBe(1), 4700);
+  setTimeout(() => expect(count).toBe(1), 5200);
+  setTimeout(() => expect(count).toBe(2), 5700);
+  setTimeout(() => expect(count).toBe(2), 6200);
+  setTimeout(() => expect(count).toBe(2), 6700);
+  setTimeout(() => expect(count).toBe(2), 7200);
+  setTimeout(() => expect(count).toBe(3), 7700);
+  setTimeout(() => expect(count).toBe(3), 8200);
+  await sleep(10000);
+});
+
+
 test("debounceEarly.1", async () => {
   var count = 0;
   var fn = debounceEarly(() => ++count, 1500);
@@ -452,6 +527,36 @@ test("debounceEarly.2", async () => {
   setTimeout(() => expect(count).toBe(1), 3700);
   setTimeout(() => expect(count).toBe(2), 4200);
   setTimeout(() => expect(count).toBe(2), 4700);
+  await sleep(10000);
+});
+
+
+test("debounceEarly.3", async () => {
+  var count = 0;
+  var fn = debounceEarly(() => ++count, 1500, 3500);
+  setTimeout(fn, 0);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 3000);
+  setTimeout(fn, 4000);
+  setTimeout(fn, 6000);
+  // `count` incremented after 0s
+  // `count` incremented after 4s
+  // `count` incremented after 6s
+  setTimeout(() => expect(count).toBe(1), 200);
+  setTimeout(() => expect(count).toBe(1), 700);
+  setTimeout(() => expect(count).toBe(1), 1200);
+  setTimeout(() => expect(count).toBe(1), 1700);
+  setTimeout(() => expect(count).toBe(1), 2200);
+  setTimeout(() => expect(count).toBe(1), 2700);
+  setTimeout(() => expect(count).toBe(1), 3200);
+  setTimeout(() => expect(count).toBe(1), 3700);
+  setTimeout(() => expect(count).toBe(2), 4200);
+  setTimeout(() => expect(count).toBe(2), 4700);
+  setTimeout(() => expect(count).toBe(2), 5200);
+  setTimeout(() => expect(count).toBe(2), 5700);
+  setTimeout(() => expect(count).toBe(3), 6200);
+  setTimeout(() => expect(count).toBe(3), 6700);
   await sleep(10000);
 });
 
