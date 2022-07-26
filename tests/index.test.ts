@@ -29,6 +29,12 @@ import {throttleEarly} from "../src";
 
 
 
+// Config
+jest.setTimeout(15000);
+
+
+
+
 // 1. Basic tests.
 test("example1", () => {
   var a = funcxion.composeRight(x => x*x, x => x+2);
@@ -286,35 +292,35 @@ test("curryRight", () => {
 
 test("delay.1", async () => {
   var count = 0;
-  var fn = delay(() => ++count, 50);
-  setTimeout(fn, 0);    // `count` incremented after 50 ms
-  setTimeout(fn, 100);  // `count` incremented after 150 ms
-  setTimeout(() => expect(count).toBe(0), 20);
-  setTimeout(() => expect(count).toBe(1), 70);
-  setTimeout(() => expect(count).toBe(1), 120);
-  setTimeout(() => expect(count).toBe(2), 170);
-  setTimeout(() => expect(count).toBe(2), 220);
-  await sleep(1000);
+  var fn = delay(() => ++count, 500);
+  setTimeout(fn, 0);     // `count` incremented after 0.5s
+  setTimeout(fn, 1000);  // `count` incremented after 1.5s
+  setTimeout(() => expect(count).toBe(0), 200);
+  setTimeout(() => expect(count).toBe(1), 700);
+  setTimeout(() => expect(count).toBe(1), 1200);
+  setTimeout(() => expect(count).toBe(2), 1700);
+  setTimeout(() => expect(count).toBe(2), 2200);
+  await sleep(10000);
 });
 
 
 test("delay.2", async () => {
   var count = 0;
-  var fn = delay(() => ++count, 50);
-  setTimeout(fn, 0);    // `count` incremented after 50 ms
-  setTimeout(fn, 100);  // `count` incremented after 150 ms
-  setTimeout(fn, 200);  // `count` incremented after 250 ms
-  setTimeout(fn, 300);  // `count` incremented after 350 ms
-  setTimeout(() => expect(count).toBe(0), 20);
-  setTimeout(() => expect(count).toBe(1), 70);
-  setTimeout(() => expect(count).toBe(1), 120);
-  setTimeout(() => expect(count).toBe(2), 170);
-  setTimeout(() => expect(count).toBe(2), 220);
-  setTimeout(() => expect(count).toBe(3), 270);
-  setTimeout(() => expect(count).toBe(3), 320);
-  setTimeout(() => expect(count).toBe(4), 370);
-  setTimeout(() => expect(count).toBe(4), 420);
-  await sleep(1000);
+  var fn = delay(() => ++count, 500);
+  setTimeout(fn, 0);     // `count` incremented after 0.5s
+  setTimeout(fn, 1000);  // `count` incremented after 1.5s
+  setTimeout(fn, 2000);  // `count` incremented after 2.5s
+  setTimeout(fn, 3000);  // `count` incremented after 3.5s
+  setTimeout(() => expect(count).toBe(0), 200);
+  setTimeout(() => expect(count).toBe(1), 700);
+  setTimeout(() => expect(count).toBe(1), 1200);
+  setTimeout(() => expect(count).toBe(2), 1700);
+  setTimeout(() => expect(count).toBe(2), 2200);
+  setTimeout(() => expect(count).toBe(3), 2700);
+  setTimeout(() => expect(count).toBe(3), 3200);
+  setTimeout(() => expect(count).toBe(4), 3700);
+  setTimeout(() => expect(count).toBe(4), 4200);
+  await sleep(10000);
 });
 
 
@@ -340,192 +346,192 @@ test("limitUse.2", () => {
 
 test("debounce.1", async () => {
   var count = 0;
-  var fn = debounce(() => ++count, 150);
+  var fn = debounce(() => ++count, 1500);
   setTimeout(fn, 0);
-  setTimeout(fn, 100);
-  setTimeout(fn, 200);
-  setTimeout(fn, 400);
-  setTimeout(fn, 500);
-  // `count` incremented after 350 ms
-  // `count` incremented after 650 ms
-  setTimeout(() => expect(count).toBe(0), 20);
-  setTimeout(() => expect(count).toBe(0), 70);
-  setTimeout(() => expect(count).toBe(0), 120);
-  setTimeout(() => expect(count).toBe(0), 170);
-  setTimeout(() => expect(count).toBe(0), 220);
-  setTimeout(() => expect(count).toBe(0), 270);
-  setTimeout(() => expect(count).toBe(0), 320);
-  setTimeout(() => expect(count).toBe(1), 370);
-  setTimeout(() => expect(count).toBe(1), 420);
-  setTimeout(() => expect(count).toBe(1), 470);
-  setTimeout(() => expect(count).toBe(1), 520);
-  setTimeout(() => expect(count).toBe(1), 570);
-  setTimeout(() => expect(count).toBe(1), 620);
-  setTimeout(() => expect(count).toBe(2), 670);
-  setTimeout(() => expect(count).toBe(2), 720);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 4000);
+  setTimeout(fn, 5000);
+  // `count` incremented after 3.5s
+  // `count` incremented after 6.5s
+  setTimeout(() => expect(count).toBe(0), 200);
+  setTimeout(() => expect(count).toBe(0), 700);
+  setTimeout(() => expect(count).toBe(0), 1200);
+  setTimeout(() => expect(count).toBe(0), 1700);
+  setTimeout(() => expect(count).toBe(0), 2200);
+  setTimeout(() => expect(count).toBe(0), 2700);
+  setTimeout(() => expect(count).toBe(0), 3200);
+  setTimeout(() => expect(count).toBe(1), 3700);
+  setTimeout(() => expect(count).toBe(1), 4200);
+  setTimeout(() => expect(count).toBe(1), 4700);
+  setTimeout(() => expect(count).toBe(1), 5200);
+  setTimeout(() => expect(count).toBe(1), 5700);
+  setTimeout(() => expect(count).toBe(1), 6200);
+  setTimeout(() => expect(count).toBe(2), 6700);
+  setTimeout(() => expect(count).toBe(2), 7200);
+  await sleep(10000);
 });
 
 
 test("debounce.2", async () => {
   var count = 0;
-  var fn = debounce(() => ++count, 150);
+  var fn = debounce(() => ++count, 1500);
   setTimeout(fn, 0);
-  setTimeout(fn, 50);
-  setTimeout(fn, 100);
-  setTimeout(fn, 150);
-  setTimeout(fn, 200);
-  setTimeout(fn, 400);
-  setTimeout(fn, 450);
   setTimeout(fn, 500);
-  // `count` incremented after 350 ms
-  // `count` incremented after 650 ms
-  setTimeout(() => expect(count).toBe(0), 20);
-  setTimeout(() => expect(count).toBe(0), 70);
-  setTimeout(() => expect(count).toBe(0), 120);
-  setTimeout(() => expect(count).toBe(0), 170);
-  setTimeout(() => expect(count).toBe(0), 220);
-  setTimeout(() => expect(count).toBe(0), 270);
-  setTimeout(() => expect(count).toBe(0), 320);
-  setTimeout(() => expect(count).toBe(1), 370);
-  setTimeout(() => expect(count).toBe(1), 420);
-  setTimeout(() => expect(count).toBe(1), 470);
-  setTimeout(() => expect(count).toBe(1), 520);
-  setTimeout(() => expect(count).toBe(1), 570);
-  setTimeout(() => expect(count).toBe(1), 620);
-  setTimeout(() => expect(count).toBe(2), 670);
-  setTimeout(() => expect(count).toBe(2), 720);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 1500);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 4000);
+  setTimeout(fn, 4500);
+  setTimeout(fn, 5000);
+  // `count` incremented after 3.5s
+  // `count` incremented after 6.5s
+  setTimeout(() => expect(count).toBe(0), 200);
+  setTimeout(() => expect(count).toBe(0), 700);
+  setTimeout(() => expect(count).toBe(0), 1200);
+  setTimeout(() => expect(count).toBe(0), 1700);
+  setTimeout(() => expect(count).toBe(0), 2200);
+  setTimeout(() => expect(count).toBe(0), 2700);
+  setTimeout(() => expect(count).toBe(0), 3200);
+  setTimeout(() => expect(count).toBe(1), 3700);
+  setTimeout(() => expect(count).toBe(1), 4200);
+  setTimeout(() => expect(count).toBe(1), 4700);
+  setTimeout(() => expect(count).toBe(1), 5200);
+  setTimeout(() => expect(count).toBe(1), 5700);
+  setTimeout(() => expect(count).toBe(1), 6200);
+  setTimeout(() => expect(count).toBe(2), 6700);
+  setTimeout(() => expect(count).toBe(2), 7200);
+  await sleep(10000);
 });
 
 
 test("debounceEarly.1", async () => {
   var count = 0;
-  var fn = debounceEarly(() => ++count, 150);
+  var fn = debounceEarly(() => ++count, 1500);
   setTimeout(fn, 0);
-  setTimeout(fn, 100);
-  setTimeout(fn, 200);
-  setTimeout(fn, 400);
-  setTimeout(fn, 500);
-  // `count` incremented after 0 ms
-  // `count` incremented after 400 ms
-  setTimeout(() => expect(count).toBe(1), 20);
-  setTimeout(() => expect(count).toBe(1), 70);
-  setTimeout(() => expect(count).toBe(1), 120);
-  setTimeout(() => expect(count).toBe(1), 170);
-  setTimeout(() => expect(count).toBe(1), 220);
-  setTimeout(() => expect(count).toBe(1), 270);
-  setTimeout(() => expect(count).toBe(1), 320);
-  setTimeout(() => expect(count).toBe(1), 370);
-  setTimeout(() => expect(count).toBe(2), 420);
-  setTimeout(() => expect(count).toBe(2), 470);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 4000);
+  setTimeout(fn, 5000);
+  // `count` incremented after 0s
+  // `count` incremented after 4s
+  setTimeout(() => expect(count).toBe(1), 200);
+  setTimeout(() => expect(count).toBe(1), 700);
+  setTimeout(() => expect(count).toBe(1), 1200);
+  setTimeout(() => expect(count).toBe(1), 1700);
+  setTimeout(() => expect(count).toBe(1), 2200);
+  setTimeout(() => expect(count).toBe(1), 2700);
+  setTimeout(() => expect(count).toBe(1), 3200);
+  setTimeout(() => expect(count).toBe(1), 3700);
+  setTimeout(() => expect(count).toBe(2), 4200);
+  setTimeout(() => expect(count).toBe(2), 4700);
+  await sleep(10000);
 });
 
 
 test("debounceEarly.2", async () => {
   var count = 0;
-  var fn = debounceEarly(() => ++count, 150);
+  var fn = debounceEarly(() => ++count, 1500);
   setTimeout(fn, 0);
-  setTimeout(fn, 50);
-  setTimeout(fn, 100);
-  setTimeout(fn, 150);
-  setTimeout(fn, 200);
-  setTimeout(fn, 400);
-  setTimeout(fn, 450);
   setTimeout(fn, 500);
-  // `count` incremented after 0 ms
-  // `count` incremented after 400 ms
-  setTimeout(() => expect(count).toBe(1), 20);
-  setTimeout(() => expect(count).toBe(1), 70);
-  setTimeout(() => expect(count).toBe(1), 120);
-  setTimeout(() => expect(count).toBe(1), 170);
-  setTimeout(() => expect(count).toBe(1), 220);
-  setTimeout(() => expect(count).toBe(1), 270);
-  setTimeout(() => expect(count).toBe(1), 320);
-  setTimeout(() => expect(count).toBe(1), 370);
-  setTimeout(() => expect(count).toBe(2), 420);
-  setTimeout(() => expect(count).toBe(2), 470);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 1500);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 4000);
+  setTimeout(fn, 4500);
+  setTimeout(fn, 5000);
+  // `count` incremented after 0s
+  // `count` incremented after 4s
+  setTimeout(() => expect(count).toBe(1), 200);
+  setTimeout(() => expect(count).toBe(1), 700);
+  setTimeout(() => expect(count).toBe(1), 1200);
+  setTimeout(() => expect(count).toBe(1), 1700);
+  setTimeout(() => expect(count).toBe(1), 2200);
+  setTimeout(() => expect(count).toBe(1), 2700);
+  setTimeout(() => expect(count).toBe(1), 3200);
+  setTimeout(() => expect(count).toBe(1), 3700);
+  setTimeout(() => expect(count).toBe(2), 4200);
+  setTimeout(() => expect(count).toBe(2), 4700);
+  await sleep(10000);
 });
 
 
 test("throttle.1", async () => {
   var count = 0;
-  var fn = throttle(() => ++count, 250);
+  var fn = throttle(() => ++count, 2500);
   setTimeout(fn, 0);
-  setTimeout(fn, 100);
-  setTimeout(fn, 200);
-  // `count` incremented after 250 ms
-  setTimeout(() => expect(count).toBe(0), 20);
-  setTimeout(() => expect(count).toBe(0), 70);
-  setTimeout(() => expect(count).toBe(0), 120);
-  setTimeout(() => expect(count).toBe(0), 170);
-  setTimeout(() => expect(count).toBe(0), 220);
-  setTimeout(() => expect(count).toBe(1), 270);
-  setTimeout(() => expect(count).toBe(1), 320);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  // `count` incremented after 2.5s
+  setTimeout(() => expect(count).toBe(0), 200);
+  setTimeout(() => expect(count).toBe(0), 700);
+  setTimeout(() => expect(count).toBe(0), 1200);
+  setTimeout(() => expect(count).toBe(0), 1700);
+  setTimeout(() => expect(count).toBe(0), 2200);
+  setTimeout(() => expect(count).toBe(1), 2700);
+  setTimeout(() => expect(count).toBe(1), 3200);
+  await sleep(10000);
 });
 
 
 test("throttle.2", async () => {
   var count = 0;
-  var fn = throttle(() => ++count, 250);
+  var fn = throttle(() => ++count, 2500);
   setTimeout(fn, 0);
-  setTimeout(fn, 100);
-  setTimeout(fn, 200);
-  setTimeout(fn, 300);
-  setTimeout(fn, 400);
-  // `count` incremented after 250 ms
-  // `count` incremented after 550 ms
-  setTimeout(() => expect(count).toBe(0), 20);
-  setTimeout(() => expect(count).toBe(0), 70);
-  setTimeout(() => expect(count).toBe(0), 120);
-  setTimeout(() => expect(count).toBe(0), 170);
-  setTimeout(() => expect(count).toBe(0), 220);
-  setTimeout(() => expect(count).toBe(1), 270);
-  setTimeout(() => expect(count).toBe(1), 320);
-  setTimeout(() => expect(count).toBe(1), 370);
-  setTimeout(() => expect(count).toBe(1), 420);
-  setTimeout(() => expect(count).toBe(1), 470);
-  setTimeout(() => expect(count).toBe(1), 520);
-  setTimeout(() => expect(count).toBe(2), 570);
-  setTimeout(() => expect(count).toBe(2), 620);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 3000);
+  setTimeout(fn, 4000);
+  // `count` incremented after 2.5s
+  // `count` incremented after 5.5s
+  setTimeout(() => expect(count).toBe(0), 200);
+  setTimeout(() => expect(count).toBe(0), 700);
+  setTimeout(() => expect(count).toBe(0), 1200);
+  setTimeout(() => expect(count).toBe(0), 1700);
+  setTimeout(() => expect(count).toBe(0), 2200);
+  setTimeout(() => expect(count).toBe(1), 2700);
+  setTimeout(() => expect(count).toBe(1), 3200);
+  setTimeout(() => expect(count).toBe(1), 3700);
+  setTimeout(() => expect(count).toBe(1), 4200);
+  setTimeout(() => expect(count).toBe(1), 4700);
+  setTimeout(() => expect(count).toBe(1), 5200);
+  setTimeout(() => expect(count).toBe(2), 5700);
+  setTimeout(() => expect(count).toBe(2), 6200);
+  await sleep(10000);
 });
 
 
 test("throttleEarly.1", async () => {
   var count = 0;
-  var fn = throttleEarly(() => ++count, 250);
+  var fn = throttleEarly(() => ++count, 2500);
   setTimeout(fn, 0);
-  setTimeout(fn, 100);
-  setTimeout(fn, 200);
-  // `count` incremented after 0 ms
-  setTimeout(() => expect(count).toBe(1), 20);
-  setTimeout(() => expect(count).toBe(1), 70);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  // `count` incremented after 0s
+  setTimeout(() => expect(count).toBe(1), 200);
+  setTimeout(() => expect(count).toBe(1), 700);
+  await sleep(10000);
 });
 
 
 test("throttleEarly.2", async () => {
   var count = 0;
-  var fn = throttleEarly(() => ++count, 250);
+  var fn = throttleEarly(() => ++count, 2500);
   setTimeout(fn, 0);
-  setTimeout(fn, 100);
-  setTimeout(fn, 200);
-  setTimeout(fn, 300);
-  setTimeout(fn, 400);
-  // `count` incremented after 0 ms
-  // `count` incremented after 300 ms
-  setTimeout(() => expect(count).toBe(1), 20);
-  setTimeout(() => expect(count).toBe(1), 70);
-  setTimeout(() => expect(count).toBe(1), 120);
-  setTimeout(() => expect(count).toBe(1), 170);
-  setTimeout(() => expect(count).toBe(1), 220);
-  setTimeout(() => expect(count).toBe(1), 270);
-  setTimeout(() => expect(count).toBe(2), 320);
-  setTimeout(() => expect(count).toBe(2), 370);
-  setTimeout(() => expect(count).toBe(2), 420);
-  await sleep(1000);
+  setTimeout(fn, 1000);
+  setTimeout(fn, 2000);
+  setTimeout(fn, 3000);
+  setTimeout(fn, 4000);
+  // `count` incremented after 0s
+  // `count` incremented after 3s
+  setTimeout(() => expect(count).toBe(1), 200);
+  setTimeout(() => expect(count).toBe(1), 700);
+  setTimeout(() => expect(count).toBe(1), 1200);
+  setTimeout(() => expect(count).toBe(1), 1700);
+  setTimeout(() => expect(count).toBe(1), 2200);
+  setTimeout(() => expect(count).toBe(1), 2700);
+  setTimeout(() => expect(count).toBe(2), 3200);
+  setTimeout(() => expect(count).toBe(2), 3700);
+  setTimeout(() => expect(count).toBe(2), 4200);
+  await sleep(10000);
 });

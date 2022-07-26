@@ -1,6 +1,6 @@
 {
   "name": "extra-function",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "A collection of ways for transforming functions.",
   "main": "index.js",
   "module": "index.mjs",
