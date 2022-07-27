@@ -90,12 +90,22 @@ function publishPackages(ds) {
 
 // Generate wiki for all exported symbols.
 function generateWiki(ds) {
-  var rkind = /namespace|function/i;
+  var rkind = /namespace|function/i, useWiki = true;
+  var dm = new Map(ds.map(d => [d.name, d]));
   for (var d of ds) {
     var f = `wiki/${d.name}.md`;
     if (!rkind.test(d.kind)) continue;
-    if (fs.existsSync(f)) continue;
-    build.writeFileText(f, build.wikiMarkdown(d));
+    if (!fs.existsSync(f))  {
+      var txt = build.wikiMarkdown(d, {owner, repo, useWiki});
+      build.writeFileText(f, txt);
+    }
+    else {
+      var txt = build.readFileText(f);
+      txt = build.wikiUpdateDescription(txt, d);
+      txt = build.wikiUpdateCodeReference(txt, d, {owner, repo, useWiki})
+      txt = build.wikiUpdateLinkReferences(txt, dm, {owner, repo, useWiki});
+      build.writeFileText(f, txt);
+    }
   }
 }
 
