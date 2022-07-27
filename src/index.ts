@@ -435,8 +435,8 @@ export function delay(x: Function, t: number): Function {
 
 
 
-// RATE CONTROL
-// ------------
+// RATE CONTROL (COUNT)
+// --------------------
 
 /**
  * Generate restricted-use version of a function.
@@ -498,6 +498,11 @@ export function restrictAfter(x: Function, n: number): Function {
 export {restrictAfter as after};
 // - https://lodash.com/docs/4.17.15#after
 
+
+
+
+// RATE CONTROL (TIME)
+// -------------------
 
 /**
  * Generate debounced version of a function.

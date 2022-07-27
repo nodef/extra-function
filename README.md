@@ -23,19 +23,17 @@ you to obtain a desired function by transforming the behavior of existing
 functions (*without actually executing them*). The **result** of a function can
 be manipulated with [negate]. In case a *pure* function is expensive, its
 results can **cached** with [memoize]. **Parameters** of a function can be
-manipulated with [reverse], [spread], [unspread], [wrap], [unwrap]. [reverse]
-flips the order of parameters, [spread] spreads the first array parameter of a
-function, [unspread] combines all parameters into the first parameter (array),
-[wrap] adds ignored parameters to the left/right of a function's parameters, and
-[unwrap] removes common prefix and suffix parameters to a function (by passing
-known constant values as prefix/suffix). If you want some **functional**
-**behavior**, [compose], [composeRight], [curry], and [curryRight] can be used.
-[composeRight] is also known as [pipe-forward operator] or [function chaining].
-If you are unfamiliar, [Haskell] is a great purely functional language, and
-there is great [haskell beginner guide] to learn from.
+manipulated with [reverse], [spread], [unspread]. [reverse] flips the order of
+parameters, [spread] spreads the first array parameter of a function, and
+[unspread] combines all parameters into the first parameter (array). If you want
+some **functional** **behavior**, [compose], [composeRight], [curry], and
+[curryRight] can be used. [composeRight] is also known as [pipe-forward
+operator] or [function chaining]. If you are unfamiliar, [Haskell] is a great
+purely functional language, and there is great [haskell beginner guide] to learn
+from.
 
 To control invocation **time** of a function, use [delay]. A function can be
-**rate controlled** with [limitUse], [debounce], [debounceEarly], [throttle],
+**rate controlled** with [restrict], [debounce], [debounceEarly], [throttle],
 [throttleEarly]. [limitUse] controls the number of times a function can be
 called, and is useful when you want to enforce a function to be called only
 *once*, the first n times (*before*), or *after* n times. [debounce] and
@@ -44,14 +42,14 @@ called, and is useful when you want to enforce a function to be called only
 request after user input has stopped (for certain delay time). [throttle] and
 [throttleEarly] can be used to limit the rate of invocation of a function, and
 can be used for example to minimize system usage when a user is [constantly
-refreshing a webpage]. Except [limitUse], all *rate/time control* methods can be
+refreshing a webpage]. Except [restrict], all *rate/time control* methods can be
 *flushed* (`flush()`) to invoke the target function immediately, or *cleared*
 (`clear()`) to disable invocation of the target function.
 
-In addition, [is], [isAsync], [isGenerator], [signature], [name], [parameters],
-and [arity] obtain metadata (about) information on a function. To attach a
-`this` to a function, use [bind]. A few generic functions are also included:
-[ARGUMENTS], [NOOP], [IDENTITY], [COMPARE].
+In addition, [is], [isAsync], [isGenerator], [name], and [length] obtain
+metadata (about) information on a function. To attach a `this` to a function,
+use [bind]. A few generic functions are also included: [ARGUMENTS], [NOOP],
+[IDENTITY], [COMPARE].
 
 This package is available in both *Node.js* and *Web* formats. The web format is
 exposed as `extra_function` standalone variable and can be loaded from [jsDelivr CDN].
@@ -101,15 +99,20 @@ a([2, 3, 1]);
 | [IDENTITY] | Return the same (first) value. |
 | [COMPARE] | Compare two values. |
 |  |  |
+| [name] | Get the name of a function. |
+| [length] | Get the number of parameters of a function. |
+|  |  |
+| [bind] | Bind this-object, and optional prefix arguments to a function. |
+|  |  |
+| [call] | Invoke a function with specified this-object, and arguments provided individually. |
+| [apply] | Invoke a function with specified this-object, and arguments provided as an array. |
+|  |  |
 | [is] | Check if value is a function. |
 | [isAsync] | Check if value is an async function. |
 | [isGenerator] | Check if value is a generator function. |
-| [signature] | Get the signature of a function. |
-| [name] | Get the name of a function. |
-| [parameters] | Get the parameter names of a function. |
-| [arity] | Get the number of parameters of a function. |
 |  |  |
-| [bind] | Generate a function with bound this-object, and optional prefix arguments. |
+| [contextify] | Contextify a function by accepting the first parameter as this-object. |
+| [decontextify] | Decontextify a function by accepting this-object as the first argument. |
 |  |  |
 | [negate] | Generate a result-negated version of a function. |
 |  |  |
@@ -118,17 +121,22 @@ a([2, 3, 1]);
 | [reverse] | Generate a parameter-reversed version of a function. |
 | [spread] | Generate a (first) parameter-spreaded version of a function. |
 | [unspread] | Generate a (first) parameter-collapsed version of a function. |
-| [wrap] | Generate a parameter-wrapped version of a function. |
-| [unwrap] | Generate a parameter-unwrapped version of a function. |
+| [attach] | Attach prefix arguments to leftmost parameters of a function. |
+| [attachRight] | Attach suffix arguments to rightmost parameters of a function. |
 |  |  |
 | [compose] | Compose functions together, in applicative order. |
 | [composeRight] | Compose functions together, such that result is piped forward. |
 | [curry] | Generate curried version of a function. |
 | [curryRight] | Generate right-curried version of a function. |
 |  |  |
+| [defer] | Generate deferred version of a function, that executes after the current stack has cleared. |
 | [delay] | Generate delayed version of a function. |
 |  |  |
-| [limitUse] | Generate limited-use version of a function. |
+| [restrict] | Generate restricted-use version of a function. |
+| [restrictOnce] | Restrict a function to be used only once. |
+| [restrictBefore] | Restrict a function to be used only upto a certain number of calls. |
+| [restrictAfter] | Restrict a function to be used only after a certain number of calls. |
+|  |  |
 | [debounce] | Generate debounced version of a function. |
 | [debounceEarly] | Generate leading-edge debounced version of a function. |
 | [throttle] | Generate throttled version of a function. |
@@ -186,25 +194,31 @@ a([2, 3, 1]);
 [is]: https://nodef.github.io/extra-function/modules.html#is
 [isAsync]: https://nodef.github.io/extra-function/modules.html#isAsync
 [isGenerator]: https://nodef.github.io/extra-function/modules.html#isGenerator
-[signature]: https://nodef.github.io/extra-function/modules.html#signature
 [name]: https://nodef.github.io/extra-function/modules.html#name
-[parameters]: https://nodef.github.io/extra-function/modules.html#parameters
-[arity]: https://nodef.github.io/extra-function/modules.html#arity
 [bind]: https://nodef.github.io/extra-function/modules.html#bind
 [negate]: https://nodef.github.io/extra-function/modules.html#negate
 [memoize]: https://nodef.github.io/extra-function/modules.html#memoize
 [reverse]: https://nodef.github.io/extra-function/modules.html#reverse
 [spread]: https://nodef.github.io/extra-function/modules.html#spread
 [unspread]: https://nodef.github.io/extra-function/modules.html#unspread
-[wrap]: https://nodef.github.io/extra-function/modules.html#wrap
-[unwrap]: https://nodef.github.io/extra-function/modules.html#unwrap
 [compose]: https://nodef.github.io/extra-function/modules.html#compose
 [composeRight]: https://nodef.github.io/extra-function/modules.html#composeRight
 [curry]: https://nodef.github.io/extra-function/modules.html#curry
 [curryRight]: https://nodef.github.io/extra-function/modules.html#curryRight
 [delay]: https://nodef.github.io/extra-function/modules.html#delay
-[limitUse]: https://nodef.github.io/extra-function/modules.html#limitUse
 [debounce]: https://nodef.github.io/extra-function/modules.html#debounce
 [debounceEarly]: https://nodef.github.io/extra-function/modules.html#debounceEarly
 [throttle]: https://nodef.github.io/extra-function/modules.html#throttle
 [throttleEarly]: https://nodef.github.io/extra-function/modules.html#throttleEarly
+[restrict]: https://nodef.github.io/extra-function/modules.html#restrict
+[length]: https://nodef.github.io/extra-function/modules.html#length
+[call]: https://nodef.github.io/extra-function/modules.html#call
+[apply]: https://nodef.github.io/extra-function/modules.html#apply
+[contextify]: https://nodef.github.io/extra-function/modules.html#contextify
+[decontextify]: https://nodef.github.io/extra-function/modules.html#decontextify
+[attach]: https://nodef.github.io/extra-function/modules.html#attach
+[attachRight]: https://nodef.github.io/extra-function/modules.html#attachRight
+[defer]: https://nodef.github.io/extra-function/modules.html#defer
+[restrictOnce]: https://nodef.github.io/extra-function/modules.html#restrictOnce
+[restrictBefore]: https://nodef.github.io/extra-function/modules.html#restrictBefore
+[restrictAfter]: https://nodef.github.io/extra-function/modules.html#restrictAfter
