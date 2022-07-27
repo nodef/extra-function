@@ -1,13 +1,13 @@
 // TYPES
 // =====
 
-// Represents an async function (async function).
-const AsyncFunction: Function = Object.getPrototypeOf(NOOP_ASYNC).constructor;
+/** Represents an async function (async function). */
+const AsyncFunction: Function = Object.getPrototypeOf(ASYNC_NOOP).constructor;
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 
-// Represents a generator function (function*).
-const GeneratorFunction: Function = Object.getPrototypeOf(NOOP_GENERATOR).constructor;
+/** Represents a generator function (function*). */
+const GeneratorFunction: Function = Object.getPrototypeOf(GENERATOR_NOOP).constructor;
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 
@@ -16,12 +16,6 @@ const GeneratorFunction: Function = Object.getPrototypeOf(NOOP_GENERATOR).constr
 
 // CONSTANTS
 // =========
-
-/** Match normal function, with [async, *, name, parameters]. */
-const RNORMAL = /^(async\s)?\s*function(\*)?\s*([^\(]*)\s*\(([^\)]*)\)/;
-/** Match arrow function, with [async,,, parameters]. */
-const RARROW = /^(async\s)?\s*()()\(?([^\)]*)\)?\s*=>/;
-
 
 /**
  * Return the arguments passed as a array.
@@ -37,14 +31,10 @@ export function ARGUMENTS(...args: any[]): any[] {
  * Do nothing.
  * @param args arguments (ignored)
  */
-export function NOOP(...args: any[]): void {
-}
+export function NOOP(...args: any[]): void {}
 
-async function NOOP_ASYNC(...args: any[]): Promise<void> {
-}
-
-function* NOOP_GENERATOR(...args: any[]): Generator<never, void, unknown> {
-}
+async function ASYNC_NOOP(...args: any[]): Promise<void> {}
+function*  GENERATOR_NOOP(...args: any[]): Generator<never, void, unknown> {}
 
 
 /**
@@ -70,8 +60,89 @@ export function COMPARE<T>(a: T, b: T): number {
 
 
 
-// METHODS
-// =======
+// METHODS (BUILTIN)
+// =================
+
+// ABOUT
+// -----
+
+/**
+ * Get the name of a function.
+ * @param x a function
+ * @returns name
+ */
+export function name(x: Function): string {
+  return x.name;
+}
+// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/name
+// - https://www.npmjs.com/package/fn-name
+
+
+/**
+ * Get the number of parameters of a function.
+ * @param x a function
+ * @returns |[p, q, ...]| | x(p, q, ...)
+ */
+export function length(x: Function): number {
+  return x.length;
+}
+export {length as arity};
+// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length
+
+
+
+
+// BINDING
+// -------
+
+/**
+ * Bind this-object, and optional prefix arguments to a function.
+ * @param x a function
+ * @param ths this object to bind
+ * @param prefix prefix arguments
+ * @returns (...args) => this.x(...prefix, ...args)
+ */
+export function bind(x: Function, ths: any, ...prefix: any[]): Function {
+  return x.bind(ths, ...prefix);
+}
+// - https://underscorejs.org/#bind
+// - https://lodash.com/docs/4.17.15#bind
+// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+
+
+
+
+// INVOCATION
+// ----------
+
+/**
+ * Invoke a function with specified this-object, and arguments provided individually.
+ * @param x a function
+ * @param ths this object to invoke with
+ * @param args arguments
+ * @returns this.x(...args)
+ */
+export function call(x: Function, ths: any=null, ...args: any[]): any {
+  return x.call(ths, ...args);
+}
+
+
+/**
+ * Invoke a function with specified this-object, and arguments provided as an array.
+ * @param x a function
+ * @param ths this object to invoke with
+ * @param args arguments array
+ * @returns this.x(...args)
+ */
+export function apply(x: Function, ths: any=null, args: any[]): any {
+  return x.apply(ths, args);
+}
+
+
+
+
+// METHODS (CUSTOM)
+// ================
 
 // ABOUT
 // -----
@@ -82,7 +153,7 @@ export function COMPARE<T>(a: T, b: T): number {
  * @returns is function?
  */
 export function is(v: any): v is Function {
-  return typeof v==='function';
+  return typeof v==="function";
 }
 // - https://www.npmjs.com/package/is-function
 
@@ -120,85 +191,28 @@ export function isGenerator(v: any): v is GeneratorFunction {
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction
 
 
-/**
- * IGNORE: Check if value is an arrow function.
- * @param x a value
- * @returns is arrow function?
- */
-// function isArrow(x: any): boolean {
-//   if (typeof x!=='function') return false;
-//   else return RARROW.test(x.toString());
-// }
 
 
-// Get parameter names from regexp matches.
-function getParameters(m: RegExpExecArray): string[] {
-  return m[4]? m[4].trim().split(/,\s*/g).map(p => p.replace(/\W.*/, "")) : [];
-}
+// CONTEXT
+// -------
 
 /**
- * Get the signature of a function.
+ * Contextify a function by accepting the first parameter as this-object.
  * @param x a function
- * @returns name(p, q, ...)
+ * @returns (...args) => x(this, ...args)
  */
-export function signature(x: Function): string {
-  var s = x.toString();
-  var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return `${m[1]||""}function${m[2]||""} ${m[3]||""}(${getParameters(m).join(", ")})`;
+export function contextify(x: Function): Function {
+  return function(...args: any[]) { return x(this, ...args); };
 }
 
 
 /**
- * Get the name of a function.
+ * Decontextify a function by accepting this-object as the first argument.
  * @param x a function
- * @returns name
+ * @returns (this, ...args) => this.x(...args)
  */
-export function name(x: Function): string {
-  if (x.name!=null) return x.name;
-  var s = x.toString();
-  var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return m[3] || "";
-}
-// - https://github.com/sindresorhus/fn-name/blob/master/index.js
-// - https://www.npmjs.com/package/fn-name
-
-
-/**
- * Get the parameter names of a function.
- * @param x a function
- * @returns [p, q, ...]
- */
-export function parameters(x: Function): string[] {
-  var s = x.toString();
-  var m = RNORMAL.exec(s) || RARROW.exec(s);
-  return getParameters(m);
-}
-
-
-/**
- * Get the number of parameters of a function.
- * @param x a function
- * @returns |[p, q, ...]|
- */
-export function arity(x: Function): number {
-  return x.length;
-}
-
-
-
-
-// BINDING THIS
-// ------------
-
-/**
- * Generate a function with bound this-object, and optional prefix arguments.
- * @param x a function
- * @param thisArg this object to bind
- * @param prefix prefix arguments
- * @returns (...args) => this.x(...prefix, ...args)
- */
-export function bind(x: Function, thisArg: any, ...prefix: any[]): Function {
-  return x.bind(thisArg, ...prefix);
+export function decontextify(x: Function): Function {
+  return (ths: any=null, ...args: any[]) => x.call(ths, ...args);
 }
 
 
@@ -261,9 +275,10 @@ export function memoize(x: Function, fr: Resolver=null, cache: Map<any, any>=nul
  * @param x a function
  * @returns (p, q, ...) => x(..., q, p)
  */
- export function reverse(x: Function): Function {
+export function reverse(x: Function): Function {
   return (...args: any[]) => x(...args.reverse());
 }
+export {reverse as flip};
 
 
 /**
@@ -287,27 +302,27 @@ export function unspread(x: Function): Function {
 
 
 /**
- * Generate a parameter-wrapped version of a function.
+ * Attach prefix arguments to leftmost parameters of a function.
  * @param x a function
- * @param start actual parameter start
- * @param end actual parameter end [end]
- * @returns (...args) => x(...args[start:end])
+ * @param prefix prefix arguments
+ * @returns (...args) => x(...prefix, ...args)
  */
-export function wrap(x: Function, start: number, end: number=Number.MAX_SAFE_INTEGER): Function {
-  return (...args: any[]) => x(...args.slice(start, end));
+export function attach(x: Function, ...prefix: any[]): Function {
+  return (...args: any[]) => x(...prefix, ...args);
 }
+export {attach as partial};
 
 
 /**
- * Generate a parameter-unwrapped version of a function.
+ * Attach suffix arguments to rightmost parameters of a function.
  * @param x a function
- * @param prefix prefix arguments
- * @param suffix suffix arguments []
- * @returns (...args) => x(...prefix, ...args, ...suffix)
+ * @param suffix suffix arguments
+ * @returns (...args) => x(...args, ...suffix)
  */
-export function unwrap(x: Function, prefix: any[], suffix: any[]=[]): Function {
-  return (...args: any[]) => x(...prefix, ...args, ...suffix);
+export function attachRight(x: Function, ...suffix: any[]): Function {
+  return (...args: any[]) => x(...args, ...suffix);
 }
+export {attachRight as partialRight};
 
 
 
@@ -388,6 +403,24 @@ export interface InvocationControl {
 
 
 /**
+ * Generate deferred version of a function, that executes after the current stack has cleared.
+ * @param x a function
+ * @returns (...args) => invocation control
+ */
+ export function defer(x: Function): Function {
+  var savedArgs: any[];
+  var h = null;
+  function clear() { clearImmediate(h); h = null; }
+  function flush() { x(...savedArgs); clear(); }
+  return (...args: any[]): InvocationControl => {
+    savedArgs = args;
+    h = setImmediate(flush);
+    return {clear, flush};
+  };
+}
+
+
+/**
  * Generate delayed version of a function.
  * @param x a function
  * @param t delay time (ms)
@@ -412,13 +445,13 @@ export function delay(x: Function, t: number): Function {
 // ------------
 
 /**
- * Generate limited-use version of a function.
+ * Generate restricted-use version of a function.
  * @param x a function
  * @param start usable from
  * @param end usable till (excluding) [-1 ⇒ end]
  * @returns (...args) => x(...args) from [start:end] calls
  */
-export function limitUse(x: Function, start: number, end: number=-1): Function {
+export function restrict(x: Function, start: number, end: number=-1): Function {
   var i = -1;
   return (...args: any[]) => {
     if ((++i<start)===(i<end)) return;
@@ -430,6 +463,46 @@ export function limitUse(x: Function, start: number, end: number=-1): Function {
 // - https://www.npmjs.com/package/once
 // - https://lodash.com/docs/4.17.15#after
 // - https://lodash.com/docs/4.17.15#before
+
+
+/**
+ * Restrict a function to be used only once.
+ * @param x a function
+ * @returns (...args) => x(...args) from [0:1] calls
+ */
+export function restrictOnce(x: Function): Function {
+  return restrict(x, 0, 1);
+}
+export {restrictOnce as once};
+// - https://www.npmjs.com/package/one-time
+// - https://www.npmjs.com/package/onetime
+// - https://www.npmjs.com/package/once
+
+
+/**
+ * Restrict a function to be used only upto a certain number of calls.
+ * @param x a function
+ * @param n number of calls upto which it is usable
+ * @returns (...args) => x(...args) from [0:n] calls
+ */
+export function restrictBefore(x: Function, n: number): Function {
+  return restrict(x, 0, n);
+}
+export {restrictBefore as before};
+// - https://lodash.com/docs/4.17.15#before
+
+
+/**
+ * Restrict a function to be used only after a certain number of calls.
+ * @param x a function
+ * @param n number of calls after which it is usable
+ * @returns (...args) => x(...args) from [n:end] calls
+ */
+export function restrictAfter(x: Function, n: number): Function {
+  return restrict(x, n);
+}
+export {restrictAfter as after};
+// - https://lodash.com/docs/4.17.15#after
 
 
 /**
