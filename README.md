@@ -86,9 +86,6 @@ a(2)(3);
 var a = funcxion.unspread(Math.max);
 a([2, 3, 1]);
 // → 1.25
-
-funcxion.parameters((x, y) => x+y);
-// → [ 'x', 'y' ]
 ```
 
 <br>

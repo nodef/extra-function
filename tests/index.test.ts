@@ -1,40 +1,49 @@
-import {sleep}         from "extra-sleep";
-import * as funcxion   from "../src";
-import {ARGUMENTS}     from "../src";
-import {NOOP}          from "../src";
-import {IDENTITY}      from "../src";
-import {COMPARE}       from "../src";
-import {is}            from "../src";
-import {isAsync}       from "../src";
-import {isGenerator}   from "../src";
-import {signature}     from "../src";
-import {name}          from "../src";
-import {parameters}    from "../src";
-import {arity}         from "../src";
-import {bind}          from "../src";
-import {negate}        from "../src";
-import {memoize}       from "../src";
-import {reverse}       from "../src";
-import {spread}        from "../src";
-import {unspread}      from "../src";
-import {wrap}          from "../src";
-import {unwrap}        from "../src";
-import {compose}       from "../src";
-import {composeRight}  from "../src";
-import {curry}         from "../src";
-import {curryRight}    from "../src";
-import {delay}         from "../src";
-import {limitUse}      from "../src";
-import {debounce}      from "../src";
-import {debounceEarly} from "../src";
-import {throttle}      from "../src";
-import {throttleEarly} from "../src";
+import {sleep}          from "extra-sleep";
+import * as funcxion    from "../src";
+import {ARGUMENTS}      from "../src";
+import {NOOP}           from "../src";
+import {IDENTITY}       from "../src";
+import {COMPARE}        from "../src";
+import {name}           from "../src";
+import {length}         from "../src";
+import {bind}           from "../src";
+import {call}           from "../src";
+import {apply}          from "../src";
+import {is}             from "../src";
+import {isAsync}        from "../src";
+import {isGenerator}    from "../src";
+import {contextify}     from "../src";
+import {decontextify}   from "../src";
+import {negate}         from "../src";
+import {memoize}        from "../src";
+import {reverse}        from "../src";
+import {spread}         from "../src";
+import {unspread}       from "../src";
+import {attach}         from "../src";
+import {attachRight}    from "../src";
+import {compose}        from "../src";
+import {composeRight}   from "../src";
+import {curry}          from "../src";
+import {curryRight}     from "../src";
+import {defer}          from "../src";
+import {delay}          from "../src";
+import {restrict}       from "../src";
+import {restrictOnce}   from "../src";
+import {restrictBefore} from "../src";
+import {restrictAfter}  from "../src";
+import {debounce}       from "../src";
+import {debounceEarly}  from "../src";
+import {throttle}       from "../src";
+import {throttleEarly}  from "../src";
 
 
 
 
 // Config
+jest.retryTimes(3);
 jest.setTimeout(15000);
+// - https://stackoverflow.com/a/71599782/1413259
+// - https://stackoverflow.com/a/49864436/1413259
 
 
 
@@ -52,10 +61,6 @@ test("example1", () => {
   var a = funcxion.unspread(Math.max);
   expect(a([2, 3, 1])).toBe(3);
   // → 1.25
-
-  var b = funcxion.parameters((x, y) => x+y);
-  expect(b).toStrictEqual(["x", "y"]);
-  // → [ "x", "y" ]
 });
 
 
@@ -97,6 +102,54 @@ test("COMPARE", () => {
 });
 
 
+test("name", () => {
+  var a = name(delay);
+  expect(a).toBe("delay");
+  var a = name(debounce);
+  expect(a).toBe("debounce");
+});
+
+
+test("length", () => {
+  var a = length(() => 0);
+  expect(a).toBe(0);
+  var a = length((x, y) => 0);
+  expect(a).toBe(2);
+});
+
+
+test("bind", () => {
+  var array = [1];
+  var fn = bind(Array.prototype.push, array);
+  fn(2, 3, 4);  // push(2, 3, 4)
+  expect(array).toStrictEqual([1, 2, 3, 4]);
+  var array = [1, 2, 3, 4];
+  var fn = bind(Array.prototype.splice, array, 1);
+  fn(2);  // splice(1, 2)
+  expect(array).toStrictEqual([1, 4]);
+});
+
+
+test("call", () => {
+  var array = [1];
+  call(Array.prototype.push, array, 2, 3, 4);  // push(2, 3, 4)
+  expect(array).toStrictEqual([1, 2, 3, 4]);
+  var array = [1, 2, 3, 4];
+  call(Array.prototype.splice, array, 1, 2);  // splice(1, 2)
+  expect(array).toStrictEqual([1, 4]);
+});
+
+
+test("apply", () => {
+  var array = [1];
+  apply(Array.prototype.push, array, [2, 3, 4]);  // push(2, 3, 4)
+  expect(array).toStrictEqual([1, 2, 3, 4]);
+  var array = [1, 2, 3, 4];
+  apply(Array.prototype.splice, array, [1, 2]);  // splice(1, 2)
+  expect(array).toStrictEqual([1, 4]);
+});
+
+
 test("is", () => {
   var a = is(Object.keys);
   expect(a).toBe(true);
@@ -129,51 +182,29 @@ test("isGenerator", () => {
 });
 
 
-test("signature", () => {
-  var a = signature(delay);
-  expect(a).toBe("function delay(x, t)");
-  var a = signature(debounce);
-  expect(a).toBe("function debounce(x, t, T)");
+test("contextify", () => {
+  function count(x, value) {
+    var a = 0;
+    for (var v of x)
+      if (v===value) ++a;
+    return a;
+  }
+  var fn = contextify(count);
+  expect(fn.call([6, 3, 4, 3], 3)).toBe(2);
+  expect(fn.call([6, 1, 4, 3], 3)).toBe(1);
 });
 
 
-test("name", () => {
-  var a = name(delay);
-  expect(a).toBe("delay");
-  var a = name(debounce);
-  expect(a).toBe("debounce");
-});
-
-
-test("parameters", () => {
-  var a = parameters(delay);
-  expect(a).toStrictEqual(["x", "t"]);
-  var a = parameters(debounce);
-  expect(a).toStrictEqual(["x", "t", "T"]);
-});
-
-
-test("arity", () => {
-  var a = arity(() => 0);
-  expect(a).toBe(0);
-  var a = arity((x, y) => 0);
-  expect(a).toBe(2);
-});
-
-
-test("bind.1", () => {
-  var a  = [1];
-  var fn = bind(Array.prototype.push, a);
-  fn(2, 3, 4);  // push(2, 3, 4)
-  expect(a).toStrictEqual([1, 2, 3, 4]);
-});
-
-
-test("bind.2", () => {
-  var a  = [1, 2, 3, 4];
-  var fn = bind(Array.prototype.splice, a, 1);
-  fn(2);  // splice(1, 2)
-  expect(a).toStrictEqual([1, 4]);
+test("decontextify", () => {
+  function count(value) {
+    var a = 0;
+    for (var v of this)
+      if (v===value) ++a;
+    return a;
+  }
+  var fn = decontextify(count);
+  expect(fn([6, 3, 4, 3], 3)).toBe(2);
+  expect(fn([6, 1, 4, 3], 3)).toBe(1);
 });
 
 
@@ -255,7 +286,7 @@ test("spread", () => {
     return a;
   }
   var fn = spread(sum);
-  expect(fn(1, 2, 3)).toBe(6);                      // sum([1, 2, 3])
+  expect(fn(1, 2, 3)).toBe(6);  // sum([1, 2, 3])
   var array = [1];
   function concat(x: number[]) {
     return array.concat(x);
@@ -267,27 +298,29 @@ test("spread", () => {
 
 test("unspread", () => {
   var fn = unspread(Math.min);
-  expect(fn([7, 4, 9])).toBe(4);                        // Math.min(7, 4, 9)
+  expect(fn([7, 4, 9])).toBe(4);  // Math.min(7, 4, 9)
   var fn = unspread((x, i, I) => x.slice(i, I));
   expect(fn([[1, 2, 3, 4], 2])).toStrictEqual([3, 4]);  // [1, 2, 3, 4].slice(2)
 });
 
 
-test("wrap", () => {
-  var fn = wrap(Math.min, 1);
-  expect(fn(100, 180, 130)).toBe(130);      // Math.min(180, 130)
-  var fn = wrap(Math.min, 1, 3);
-  expect(fn(100, 180, 130, 80)).toBe(130);  // Math.min(180, 130)
+test("attach", () => {
+  var fn = attach(Math.min, 100);
+  expect(fn(180, 130)).toBe(100);  // Math.min(100, 180, 130)
+  var array = [1];
+  var fn = attach((...vs) => array.push(...vs), 10, 10);
+  fn(1, 2, 3);  // array.push(10, 10, 1, 2, 3)
+  expect(array).toStrictEqual([1, 10, 10, 1, 2, 3]);
 });
 
 
-test("unwrap", () => {
-  var fn = unwrap(Math.min, [100]);
-  expect(fn(180, 130)).toBe(100);  // Math.min(100, 180, 130)
+test("attachRight", () => {
+  var fn = attachRight(Math.min, 100);
+  expect(fn(180, 130)).toBe(100);  // Math.min(180, 130, 100)
   var array = [1];
-  var fn = unwrap((...vs) => array.push(...vs), [10], [10]);
-  fn(1, 2, 3);                     // array.push(10, 1, 2, 3, 10)
-  expect(array).toStrictEqual([1, 10, 1, 2, 3, 10]);
+  var fn = attachRight((...vs) => array.push(...vs), 10, 10);
+  fn(1, 2, 3);  // array.push(1, 2, 3, 10, 10)
+  expect(array).toStrictEqual([1, 1, 2, 3, 10, 10]);
 });
 
 
@@ -332,6 +365,17 @@ test("curryRight", () => {
 });
 
 
+test("defer", async () => {
+  var count = 0;
+  var fn = defer(() => ++count);
+  fn();  // `count` incremented after 0s
+  fn();  // `count` incremented after 0s
+  expect(count).toBe(0);
+  setTimeout(() => expect(count).toBe(2), 200);
+  await sleep(10000);
+});
+
+
 test("delay.1", async () => {
   var count = 0;
   var fn = delay(() => ++count, 500);
@@ -366,23 +410,50 @@ test("delay.2", async () => {
 });
 
 
-test("limitUse.1", () => {
+test("restrict.1", () => {
   var sum = 0;
   var add = (x: number) => sum += x;
-  var fn  = limitUse(add, 0, 4);
+  var fn  = restrict(add, 0, 4);
   for (var i=0; i<10; ++i)
     fn(i);
   expect(sum).toBe(6);  // 0 + 1 + 2 + 3
 });
 
 
-test("limitUse.2", () => {
+test("restrict.2", () => {
   var sum = 0;
   var add = (x: number) => sum += x;
-  var fn  = limitUse(add, 4, 8);
+  var fn  = restrict(add, 4, 8);
   for (var i=0; i<10; ++i)
     fn(i);
   expect(sum).toBe(22);  // 4 + 5 + 6 + 7
+});
+
+
+test("restrictOnce", () => {
+  var count = 0;
+  var fn = restrictOnce(x => ++count);
+  for (var i=0; i<10; ++i)
+    fn(i);
+  expect(count).toBe(1);
+});
+
+
+test("restrictBefore", () => {
+  var count = 0;
+  var fn = restrictBefore(x => ++count, 3);
+  for (var i=0; i<10; ++i)
+    fn(i);
+  expect(count).toBe(3);
+});
+
+
+test("restrictAfter", () => {
+  var count = 0;
+  var fn = restrictAfter(x => ++count, 3);
+  for (var i=0; i<10; ++i)
+    fn(i);
+  expect(count).toBe(7);
 });
 
 
