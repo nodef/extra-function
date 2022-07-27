@@ -407,14 +407,11 @@ export interface InvocationControl {
  * @param x a function
  * @returns (...args) => invocation control
  */
- export function defer(x: Function): Function {
-  var savedArgs: any[];
-  var h = null;
-  function clear() { clearImmediate(h); h = null; }
-  function flush() { x(...savedArgs); clear(); }
+export function defer(x: Function): Function {
   return (...args: any[]): InvocationControl => {
-    savedArgs = args;
-    h = setImmediate(flush);
+    var h = setImmediate(flush);
+    function clear() { clearImmediate(h); h = null; }
+    function flush() { x(...args); clear(); }
     return {clear, flush};
   };
 }
@@ -427,13 +424,10 @@ export interface InvocationControl {
  * @returns (...args) => invocation control
  */
 export function delay(x: Function, t: number): Function {
-  var savedArgs: any[];
-  var h = null;
-  function clear() { clearTimeout(h); h = null; }
-  function flush() { x(...savedArgs); clear(); }
   return (...args: any[]): InvocationControl => {
-    savedArgs = args;
-    h = setTimeout(flush, t);
+    var h = setTimeout(flush, t);
+    function clear() { clearTimeout(h); h = null; }
+    function flush() { x(...args); clear(); }
     return {clear, flush};
   }
 }
@@ -454,7 +448,7 @@ export function delay(x: Function, t: number): Function {
 export function restrict(x: Function, start: number, end: number=-1): Function {
   var i = -1;
   return (...args: any[]) => {
-    if ((++i<start)===(i<end)) return;
+    if ((++i<start)===(i<end || end<0)) return;
     return x(...args);
   };
 }
