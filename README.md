@@ -34,17 +34,15 @@ from.
 
 To control invocation **time** of a function, use [delay]. A function can be
 **rate controlled** with [restrict], [debounce], [debounceEarly], [throttle],
-[throttleEarly]. [limitUse] controls the number of times a function can be
-called, and is useful when you want to enforce a function to be called only
-*once*, the first n times (*before*), or *after* n times. [debounce] and
-[debounceEarly] prevent the invocation of a function during **hot** periods
-(when there are too many calls), and can be used for example to issue AJAX
-request after user input has stopped (for certain delay time). [throttle] and
-[throttleEarly] can be used to limit the rate of invocation of a function, and
-can be used for example to minimize system usage when a user is [constantly
-refreshing a webpage]. Except [restrict], all *rate/time control* methods can be
-*flushed* (`flush()`) to invoke the target function immediately, or *cleared*
-(`clear()`) to disable invocation of the target function.
+[throttleEarly]. [debounce] and [debounceEarly] prevent the invocation of a
+function during **hot** periods (when there are too many calls), and can be used
+for example to issue AJAX request after user input has stopped (for certain
+delay time). [throttle] and [throttleEarly] can be used to limit the rate of
+invocation of a function, and can be used for example to minimize system usage
+when a user is [constantly refreshing a webpage]. Except [restrict], all
+*rate/time control* methods can be *flushed* (`flush()`) to invoke the target
+function immediately, or *cleared* (`clear()`) to disable invocation of the
+target function.
 
 In addition, [is], [isAsync], [isGenerator], [name], and [length] obtain
 metadata (about) information on a function. To attach a `this` to a function,
