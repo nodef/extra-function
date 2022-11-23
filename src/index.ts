@@ -2,12 +2,12 @@
 // =====
 
 /** Represents an async function (async function). */
-const AsyncFunction: Function = Object.getPrototypeOf(ASYNC_NOOP).constructor;
+const AsyncFunction: Function = Object.getPrototypeOf(async function() {}).constructor;
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 
 /** Represents a generator function (function*). */
-const GeneratorFunction: Function = Object.getPrototypeOf(GENERATOR_NOOP).constructor;
+const GeneratorFunction: Function = Object.getPrototypeOf(function*() {}).constructor;
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction
 // - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 
@@ -32,9 +32,6 @@ export function ARGUMENTS(...args: any[]): any[] {
  * @param args arguments (ignored)
  */
 export function NOOP(...args: any[]): void {}
-
-async function ASYNC_NOOP(...args: any[]): Promise<void> {}
-function*  GENERATOR_NOOP(...args: any[]): Generator<never, void, unknown> {}
 
 
 /**
