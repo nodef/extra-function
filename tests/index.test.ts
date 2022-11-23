@@ -1,45 +1,51 @@
-import {sleep}          from "extra-sleep";
-import * as funcxion    from "../src";
-import {ARGUMENTS}      from "../src";
-import {NOOP}           from "../src";
-import {IDENTITY}       from "../src";
-import {COMPARE}        from "../src";
-import {name}           from "../src";
-import {length}         from "../src";
-import {bind}           from "../src";
-import {call}           from "../src";
-import {apply}          from "../src";
-import {is}             from "../src";
-import {isAsync}        from "../src";
-import {isGenerator}    from "../src";
-import {contextify}     from "../src";
-import {decontextify}   from "../src";
-import {negate}         from "../src";
-import {memoize}        from "../src";
-import {reverse}        from "../src";
-import {spread}         from "../src";
-import {unspread}       from "../src";
-import {attach}         from "../src";
-import {attachRight}    from "../src";
-import {compose}        from "../src";
-import {composeRight}   from "../src";
-import {curry}          from "../src";
-import {curryRight}     from "../src";
-import {defer}          from "../src";
-import {delay}          from "../src";
-import {restrict}       from "../src";
-import {restrictOnce}   from "../src";
-import {restrictBefore} from "../src";
-import {restrictAfter}  from "../src";
-import {debounce}       from "../src";
-import {debounceEarly}  from "../src";
-import {throttle}       from "../src";
-import {throttleEarly}  from "../src";
+import {
+  sleep,
+} from "extra-sleep";
+import {
+  ARGUMENTS,
+  NOOP,
+  IDENTITY,
+  COMPARE,
+  name,
+  length,
+  bind,
+  call,
+  apply,
+  is,
+  isAsync,
+  isGenerator,
+  contextify,
+  decontextify,
+  negate,
+  memoize,
+  reverse,
+  spread,
+  unspread,
+  attach,
+  attachRight,
+  compose,
+  composeRight,
+  curry,
+  curryRight,
+  defer,
+  delay,
+  restrict,
+  restrictOnce,
+  restrictBefore,
+  restrictAfter,
+  debounce,
+  debounceEarly,
+  throttle,
+  throttleEarly,
+} from "../src";
+import * as funcxion from "../src";
 
 
 
 
-// Config
+// CONFIG
+// ------
+
 jest.retryTimes(3);
 jest.setTimeout(15000);
 // - https://stackoverflow.com/a/71599782/1413259
@@ -65,6 +71,9 @@ test("example1", () => {
 
 
 
+
+// CONSTANTS
+// =========
 
 test("ARGUMENTS", () => {
   var a = ARGUMENTS(1, 2);
@@ -102,6 +111,14 @@ test("COMPARE", () => {
 });
 
 
+
+
+// METHODS (BUILTIN)
+// =================
+
+// ABOUT
+// -----
+
 test("name", () => {
   var a = name(delay);
   expect(a).toBe("delay");
@@ -118,6 +135,11 @@ test("length", () => {
 });
 
 
+
+
+// BINDING
+// -------
+
 test("bind", () => {
   var array = [1];
   var fn = bind(Array.prototype.push, array);
@@ -129,6 +151,11 @@ test("bind", () => {
   expect(array).toStrictEqual([1, 4]);
 });
 
+
+
+
+// INVOCATION
+// ----------
 
 test("call", () => {
   var array = [1];
@@ -149,6 +176,14 @@ test("apply", () => {
   expect(array).toStrictEqual([1, 4]);
 });
 
+
+
+
+// METHODS (CUSTOM)
+// ================
+
+// ABOUT
+// -----
 
 test("is", () => {
   var a = is(Object.keys);
@@ -182,6 +217,11 @@ test("isGenerator", () => {
 });
 
 
+
+
+// CONTEXT
+// -------
+
 test("contextify", () => {
   function count(x, value) {
     var a = 0;
@@ -208,6 +248,11 @@ test("decontextify", () => {
 });
 
 
+
+
+// RESULT MANIPULATION
+// -------------------
+
 test("negate", () => {
   var fn = negate(isFinite);
   expect(fn(Infinity)).toBe(true);
@@ -217,6 +262,11 @@ test("negate", () => {
   expect(fn(NaN)).toBe(false);
 });
 
+
+
+
+// RESULT CACHING
+// --------------
 
 test("memoize.1", () => {
   var calls = 0;
@@ -259,6 +309,11 @@ test("memoize.2", () => {
 });
 // - https://en.wikipedia.org/wiki/Integer_triangle
 
+
+
+
+// PARAMETER MANIPULATION
+// ----------------------
 
 test("reverse", () => {
   function divide(x: number, y: number) {
@@ -324,6 +379,11 @@ test("attachRight", () => {
 });
 
 
+
+
+// FUNCTIONAL BEHAVIOUR
+// --------------------
+
 test("compose", () => {
   var fn = compose();
   expect(fn()).toBeUndefined();
@@ -364,6 +424,11 @@ test("curryRight", () => {
   expect(array).toStrictEqual([1, 3, 2]);
 });
 
+
+
+
+// TIME CONTROL
+// ------------
 
 test("defer", async () => {
   var count = 0;
@@ -409,6 +474,11 @@ test("delay.2", async () => {
   await sleep(10000);
 });
 
+
+
+
+// RATE CONTROL (COUNT)
+// --------------------
 
 test("restrict.1", () => {
   var sum = 0;
@@ -456,6 +526,11 @@ test("restrictAfter", () => {
   expect(count).toBe(7);
 });
 
+
+
+
+// RATE CONTROL (TIME)
+// -------------------
 
 test("debounce.1", async () => {
   var count = 0;
