@@ -5,27 +5,27 @@ const dts      = require('rollup-plugin-dts').default;
 
 
 module.exports = [{
-  input: ".build/index.d.ts",
+  input: '.build/index.d.ts',
   output: {
-    file: "index.d.ts",
-    format: "es",
-    exports: "auto"
+    file: 'index.d.ts',
+    format: 'es',
+    exports: 'auto'
   },
   plugins: [dts()]
 }, {
-  input: ".build/index.js",
+  input: '.build/index.js',
   output: {
-    file: "index.js",
-    format: "cjs",
-    exports: "auto"
+    file: 'index.js',
+    format: 'cjs',
+    exports: 'auto'
   },
-  plugins: [resolve(), commonjs(), cleanup({comments: "none"})]
+  plugins: [resolve(), commonjs(), cleanup({comments: 'none'})]
 }, {
-  input: ".build/index.js",
+  input: '.build/index.js',
   output: {
-    file: "index.mjs",
-    format: "es",
-    exports: "auto"
+    file: 'index.mjs',
+    format: 'es',
+    exports: 'auto'
   },
-  plugins: [resolve(), commonjs(), cleanup({comments: "none"})]
+  plugins: [resolve(), commonjs(), cleanup({comments: 'none'})]
 }];
