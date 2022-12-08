@@ -39,7 +39,7 @@ export function NOOP(...args: any[]): void {}
  * @param v a value
  * @returns v
  */
-export function IDENTITY<T>(v: T): T {
+export function IDENTITY<T=any>(v: T): T {
   return v;
 }
 
@@ -50,7 +50,7 @@ export function IDENTITY<T>(v: T): T {
  * @param b another value
  * @returns a<b: -1, a=b: 0, a>b: 1
  */
-export function COMPARE<T>(a: T, b: T): number {
+export function COMPARE<T=any>(a: T, b: T): number {
   return a<b? -1 : (a>b? 1 : 0);
 }
 
