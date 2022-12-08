@@ -1,19 +1,3 @@
-// TYPES
-// =====
-
-/** Represents an async function (async function). */
-const AsyncFunction: Function = Object.getPrototypeOf(async function() {}).constructor;
-// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction
-// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-
-/** Represents a generator function (function*). */
-const GeneratorFunction: Function = Object.getPrototypeOf(function*() {}).constructor;
-// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction
-// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
-
-
-
-
 // CONSTANTS
 // =========
 
@@ -161,6 +145,7 @@ export function is(v: any): v is Function {
  * @returns is async function?
  */
 export function isAsync(v: any): boolean {
+  const AsyncFunction = (async function () {}).constructor;
   return v instanceof AsyncFunction;
 }
 // - https://www.npmjs.com/package/is-async-function
@@ -177,6 +162,7 @@ export function isAsync(v: any): boolean {
  * @returns is generator function?
  */
 export function isGenerator(v: any): v is GeneratorFunction {
+  const GeneratorFunction = (function* () {}).constructor;
   return v instanceof GeneratorFunction;
 }
 // - https://www.npmjs.com/package/is-generator
