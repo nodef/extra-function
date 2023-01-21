@@ -46,8 +46,8 @@ target function.
 
 In addition, [is], [isAsync], [isGenerator], [name], and [length] obtain
 metadata (about) information on a function. To attach a `this` to a function,
-use [bind]. A few generic functions are also included: [ARGUMENTS], [NOOP],
-[IDENTITY], [COMPARE].
+use [bind]. A few generic functions are also included: [NOOP], [FALSE], [TRUE],
+[IDENTITY], [COMPARE], [ARGUMENTS].
 
 This package is available in both *Node.js* and *Web* formats. The web format is
 exposed as `extra_function` standalone variable and can be loaded from [jsDelivr CDN].
@@ -92,10 +92,12 @@ a([2, 3, 1]);
 
 | Property | Description |
 |  ----  |  ----  |
-| [ARGUMENTS] | Return the arguments passed as a array. |
 | [NOOP] | Do nothing. |
+| [FALSE] | Return false. |
+| [TRUE] | Return false. |
 | [IDENTITY] | Return the same (first) value. |
 | [COMPARE] | Compare two values. |
+| [ARGUMENTS] | Return the arguments passed as a array. |
 |  |  |
 | [name] | Get the name of a function. |
 | [length] | Get the number of parameters of a function. |
@@ -186,10 +188,12 @@ a([2, 3, 1]);
 [![Maintainability](https://api.codeclimate.com/v1/badges/4848d3e9557e4144c919/maintainability)](https://codeclimate.com/github/nodef/extra-function/maintainability)
 
 
-[ARGUMENTS]: https://github.com/nodef/extra-function/wiki/ARGUMENTS
 [NOOP]: https://github.com/nodef/extra-function/wiki/NOOP
+[FALSE]: https://github.com/nodef/extra-function/wiki/FALSE
+[TRUE]: https://github.com/nodef/extra-function/wiki/TRUE
 [IDENTITY]: https://github.com/nodef/extra-function/wiki/IDENTITY
 [COMPARE]: https://github.com/nodef/extra-function/wiki/COMPARE
+[ARGUMENTS]: https://github.com/nodef/extra-function/wiki/ARGUMENTS
 [is]: https://github.com/nodef/extra-function/wiki/is
 [isAsync]: https://github.com/nodef/extra-function/wiki/isAsync
 [isGenerator]: https://github.com/nodef/extra-function/wiki/isGenerator

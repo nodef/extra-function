@@ -1,6 +1,6 @@
 {
   "name": "extra-function",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "description": "A collection of ways for transforming functions.",
   "main": "index.js",
   "module": "index.mjs",
@@ -30,9 +30,9 @@
   },
   "homepage": "https://github.com/nodef/extra-function#readme",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@types/jest": "^29.2.5",
+    "@types/jest": "^29.2.6",
     "extra-build": "^2.2.41",
     "extra-sleep": "^1.0.17",
     "jest": "^29.3.1",

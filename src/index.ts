@@ -2,20 +2,33 @@
 // =========
 
 /**
- * Return the arguments passed as a array.
- * @param args arguments
- * @returns [...args]
- */
-export function ARGUMENTS(...args: any[]): any[] {
-  return args;
-}
-
-
-/**
  * Do nothing.
  * @param args arguments (ignored)
  */
 export function NOOP(...args: any[]): void {}
+// - https://lodash.com/docs/4.17.15#noop
+
+
+/**
+ * Return false.
+ * @param args arguments (ignored)
+ * @returns false.
+ */
+export function FALSE(...args: any[]): false {
+  return false;
+}
+// - https://www.npmjs.com/package/boolbase
+
+
+/**
+ * Return false.
+ * @param args arguments (ignored)
+ * @returns false.
+ */
+export function TRUE(...args: any[]): true {
+  return true;
+}
+// - https://www.npmjs.com/package/boolbase
 
 
 /**
@@ -36,6 +49,16 @@ export function IDENTITY<T>(v: T): T {
  */
 export function COMPARE<T>(a: T, b: T): number {
   return a<b? -1 : (a>b? 1 : 0);
+}
+
+
+/**
+ * Return the arguments passed as a array.
+ * @param args arguments
+ * @returns [...args]
+ */
+export function ARGUMENTS(...args: any[]): any[] {
+  return args;
 }
 
 

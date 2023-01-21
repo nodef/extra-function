@@ -2,10 +2,12 @@ import {
   sleep,
 } from "extra-sleep";
 import {
-  ARGUMENTS,
   NOOP,
+  TRUE,
+  FALSE,
   IDENTITY,
   COMPARE,
+  ARGUMENTS,
   name,
   length,
   bind,
@@ -75,19 +77,23 @@ test("example1", () => {
 // CONSTANTS
 // =========
 
-test("ARGUMENTS", () => {
-  var a = ARGUMENTS(1, 2);
-  expect(a).toStrictEqual([1, 2]);
-  var a = ARGUMENTS("a", "b");
-  expect(a).toStrictEqual(["a", "b"]);
-});
-
-
 test("NOOP", () => {
   var a = NOOP(1, 2);
   expect(a).toBeUndefined();
   var a = NOOP("a", "b");
   expect(a).toBeUndefined();
+});
+
+
+test("FALSE", () => {
+  var a = FALSE();
+  expect(a).toBe(false);
+});
+
+
+test("TRUE", () => {
+  var a = TRUE();
+  expect(a).toBe(true);
 });
 
 
@@ -108,6 +114,14 @@ test("COMPARE", () => {
   expect(a).toBe(1);
   var a = COMPARE("a", "b");
   expect(a).toBe(-1);
+});
+
+
+test("ARGUMENTS", () => {
+  var a = ARGUMENTS(1, 2);
+  expect(a).toStrictEqual([1, 2]);
+  var a = ARGUMENTS("a", "b");
+  expect(a).toStrictEqual(["a", "b"]);
 });
 
 
