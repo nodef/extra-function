@@ -21,9 +21,9 @@ export function FALSE(...args: any[]): false {
 
 
 /**
- * Return false.
+ * Return true.
  * @param args arguments (ignored)
- * @returns false.
+ * @returns true.
  */
 export function TRUE(...args: any[]): true {
   return true;

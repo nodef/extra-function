@@ -1,22 +1,23 @@
-A collection of ways for transforming functions.<br>
+A **function** is a *set of statements* that *performs a task* or *calculates a value*.<br>
 📦 [Node.js](https://www.npmjs.com/package/extra-function),
 🌐 [Web](https://www.npmjs.com/package/extra-function.web),
 📜 [Files](https://unpkg.com/extra-function/),
 📰 [JSDoc](https://nodef.github.io/extra-function/),
 📘 [Wiki](https://github.com/nodef/extra-function/wiki/).
 
-A **function** is a **set of statements** that *performs a task* or *calculates*
-*a value*. It can accept some **parameters**, and may define some **local**
-**variables** necessary for performing the desired *operation*. These *parameters*
-and *local variables* are contained in the **scope of the function**, and
-*cannot* be accessed from the *outside*. However, a function can access
-variables *external to itself* (as long as they are not *overridden*), such as
-*global variables* or *variables* in the scope this function is *encapsulated*
-*in*. A **nested function** can access *free variables* that are defined in
-*outer scopes*, even when it is being *invoked* **away** from where it is
-*defined*. It does this by **capturing** the *free variables* (by *reference*)
-into a **closure** [(1)]. *Closure*, *arrow functions*, and more, are
-*functional language features* based on [lambda calculus].
+Functions are one of the fundamental building blocks in JavaScript. It is
+similar to a procedure—a set of statements that performs a task or calculates a
+value [(1)]. It can accept some **parameters**, and may define some **local**
+**variables** necessary for performing the desired *operation*. These
+*parameters* and *local variables* are contained in the **scope of the**
+**function**, and *cannot* be accessed from the *outside*. However, a function can
+access variables *external to itself* (as long as they are not *overridden*),
+such as *global variables* or *variables* in the scope this function is
+*encapsulated in*. A **nested function** can access *free variables* that
+are defined in *outer scopes*, even when it is being *invoked* **away** from
+where it is *defined*. It does this by **capturing** the *free variables* (by
+*reference*) into a **closure** [(1)]. *Closure*, *arrow functions*, and more,
+are *functional language features* based on [lambda calculus].
 
 This package includes a number of methods to *transform functions*. This enables
 you to obtain a desired function by transforming the behavior of existing
@@ -49,8 +50,9 @@ metadata (about) information on a function. To attach a `this` to a function,
 use [bind]. A few generic functions are also included: [NOOP], [FALSE], [TRUE],
 [IDENTITY], [COMPARE], [ARGUMENTS].
 
-This package is available in both *Node.js* and *Web* formats. The web format is
-exposed as `extra_function` standalone variable and can be loaded from [jsDelivr CDN].
+This package is available in *Node.js* and *Web* formats. To use it on the web,
+simply use the `extra_function` global variable after loading with a `<script>`
+tag from the [jsDelivr CDN].
 
 [(1)]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
 [lambda calculus]: https://en.wikipedia.org/wiki/Lambda_calculus
@@ -67,19 +69,19 @@ exposed as `extra_function` standalone variable and can be loaded from [jsDelivr
 
 
 ```javascript
-const funcxion = require('extra-function');
-// import * as funcxion from "extra-function";
-// import * as funcxion from "https://unpkg.com/extra-function/index.mjs"; (deno)
+const xfunction = require('extra-function');
+// import * as xfunction from "extra-function";
+// import * as xfunction from "https://unpkg.com/extra-function/index.mjs"; (deno)
 
-var a = funcxion.composeRight(x => x*x, x => x+2);
+var a = xfunction.composeRight(x => x*x, x => x+2);
 a(10);
 // → 102
 
-var a = funcxion.curry((x, y) => x+y);
+var a = xfunction.curry((x, y) => x+y);
 a(2)(3);
 // → 7
 
-var a = funcxion.unspread(Math.max);
+var a = xfunction.unspread(Math.max);
 a([2, 3, 1]);
 // → 1.25
 ```

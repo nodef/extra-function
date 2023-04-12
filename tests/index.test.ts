@@ -40,7 +40,7 @@ import {
   throttle,
   throttleEarly,
 } from "../src";
-import * as funcxion from "../src";
+import * as xfunction from "../src";
 
 
 
@@ -58,15 +58,15 @@ jest.setTimeout(15000);
 
 // 1. Basic tests.
 test("example1", () => {
-  var a = funcxion.composeRight(x => x*x, x => x+2);
+  var a = xfunction.composeRight(x => x*x, x => x+2);
   expect(a(10)).toBe(102);
   // → 102
 
-  var a = funcxion.curry((x, y) => x+y);
+  var a = xfunction.curry((x, y) => x+y);
   expect(a(2)(3)).toBe(5);
   // → 7
 
-  var a = funcxion.unspread(Math.max);
+  var a = xfunction.unspread(Math.max);
   expect(a([2, 3, 1])).toBe(3);
   // → 1.25
 });
