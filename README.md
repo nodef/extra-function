@@ -188,7 +188,7 @@ a([2, 3, 1]);
 [![Coverage Status](https://coveralls.io/repos/github/nodef/extra-function/badge.svg?branch=master)](https://coveralls.io/github/nodef/extra-function?branch=master)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/4848d3e9557e4144c919/test_coverage)](https://codeclimate.com/github/nodef/extra-function/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4848d3e9557e4144c919/maintainability)](https://codeclimate.com/github/nodef/extra-function/maintainability)
-
+![](https://ga-beacon.deno.dev/G-RC63DPBH3P:SH3Eq-NoQ9mwgYeHWxu7cw/github.com/nodef/extra-function)
 
 [NOOP]: https://github.com/nodef/extra-function/wiki/NOOP
 [FALSE]: https://github.com/nodef/extra-function/wiki/FALSE
