@@ -1,5 +1,5 @@
-import {assertEquals} from "jsr:@std/assert";
-import {sleep} from "jsr:@nodef/extra-sleep";
+import {assertEquals} from "@std/assert";
+import {sleep} from "@nodef/extra-sleep";
 import {
   type Function,
   NOOP,
@@ -192,7 +192,7 @@ Deno.test("is", () => {
   assertEquals(a, true);
   const b = is(() => 0);
   assertEquals(b, true);
-  const c = is(async () => 0);
+  const c = is(async () => await 0);
   assertEquals(c, true);
   const d = is(0);
   assertEquals(d, false);
@@ -200,7 +200,7 @@ Deno.test("is", () => {
 
 
 Deno.test("isAsync", () => {
-  const a = isAsync(async () => 0);
+  const a = isAsync(async () => await 0);
   assertEquals(a, true);
   const b = isAsync(() => 0);
   assertEquals(b, false);

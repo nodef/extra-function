@@ -791,8 +791,8 @@ export interface InvocationControl {
  */
 export function defer(x: Function): Function {
   return (...args: unknown[]): InvocationControl => {
-    let h = setTimeout(flush, 0);
-    function clear() { clearTimeout(h); h = 0; }
+    let h: NodeJS.Timeout | number = setTimeout(flush, 0);
+    function clear() { clearTimeout(h as number); h = 0; }
     function flush() { x(...args); clear(); }
     return {clear, flush};
   };
@@ -828,8 +828,8 @@ export function defer(x: Function): Function {
  */
 export function delay(x: Function, t: number): Function {
   return (...args: unknown[]): InvocationControl => {
-    let h = setTimeout(flush, t);
-    function clear() { clearTimeout(h); h = 0; }
+    let h: NodeJS.Timeout | number = setTimeout(flush, t);
+    function clear() { clearTimeout(h as number); h = 0; }
     function flush() { x(...args); clear(); }
     return {clear, flush};
   }
@@ -999,17 +999,17 @@ export {restrictAfter as after};
  */
 export function debounce(x: Function, t: number, T: number=-1): Function {
   let savedArgs: unknown[];
-  let h = 0, H = 0;
+  let h = 0 as NodeJS.Timeout | number, H = 0 as NodeJS.Timeout | number;
   function clear() {
-    clearTimeout(h);
-    clearTimeout(H);
+    clearTimeout(h as number);
+    clearTimeout(H as number);
     h = H = 0;
   }
   function flush() { x(...savedArgs); clear(); };
   return (...args: unknown[]): InvocationControl => {
     savedArgs = args;
     if (T>=0)  H = H || setTimeout(flush, T);
-    if (T<0 || t<T) { clearTimeout(h); h = setTimeout(flush, t); }
+    if (T<0 || t<T) { clearTimeout(h as number); h = setTimeout(flush, t); }
     return {clear, flush};
   };
 }
@@ -1066,13 +1066,13 @@ export function debounce(x: Function, t: number, T: number=-1): Function {
  * ```
  */
 export function debounceEarly(x: Function, t: number, T: number=-1): Function {
-  let h = 0, H = 0;
+  let h = 0 as NodeJS.Timeout | number, H = 0 as NodeJS.Timeout | number;
   function clear() { h = H = 0; }
   function flush() { clear(); }
   return (...args: unknown[]): InvocationControl => {
     if (!h && !H) x(...args);
     if (T>=0)  H = H || setTimeout(flush, T);
-    if (T<0 || t<T) { clearTimeout(h); h = setTimeout(flush, t); }
+    if (T<0 || t<T) { clearTimeout(h as number); h = setTimeout(flush, t); }
     return {clear, flush};
   };
 }
@@ -1110,7 +1110,7 @@ export function debounceEarly(x: Function, t: number, T: number=-1): Function {
  */
 export function throttle(x: Function, t: number): Function {
   let savedArgs: unknown[];
-  let h = 0;
+  let h = 0 as NodeJS.Timeout | number;
   function clear() { h = 0; }
   function flush() { x(...savedArgs); clear(); }
   return (...args: unknown[]): InvocationControl => {
@@ -1150,7 +1150,7 @@ export function throttle(x: Function, t: number): Function {
  * ```
  */
 export function throttleEarly(x: Function, t: number): Function {
-  let h = 0;
+  let h = 0 as NodeJS.Timeout | number;
   function clear() { h = 0; }
   function flush() { clear(); }
   return (...args: unknown[]): InvocationControl => {

@@ -1,5 +1,11 @@
-Functions are one of the fundamental building blocks in JavaScript. It is
-similar to a procedure—a set of statements that performs a task or calculates a
+Functions are one of the fundamental building blocks in JavaScript.
+
+▌
+📦 [JSR](https://jsr.io/@nodef/extra-function),
+📦 [NPM](https://www.npmjs.com/package/extra-function),
+📰 [Docs](https://jsr.io/@nodef/extra-function/doc).
+
+It is similar to a procedure—a set of statements that performs a task or calculates a
 value [(1)]. It can accept some **parameters**, and may define some **local**
 **variables** necessary for performing the desired *operation*. These
 *parameters* and *local variables* are contained in the **scope of the**
@@ -43,9 +49,6 @@ metadata (about) information on a function. To attach a `this` to a function,
 use [bind]. A few generic functions are also included: [NOOP], [FALSE], [TRUE],
 [IDENTITY], [COMPARE], [ARGUMENTS].
 
-▌
-📦 [JSR](https://jsr.io/@nodef/extra-function),
-📰 [Docs](https://jsr.io/@nodef/extra-function/doc).
 
 [(1)]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions
 [lambda calculus]: https://en.wikipedia.org/wiki/Lambda_calculus
