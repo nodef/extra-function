@@ -1,9 +1,12 @@
 {
   "name": "@nodef/extra-function",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "license": "MIT",
   "exports": "./index.ts",
-  "exclude": [".github/"],
+  "exclude": [
+    ".github/",
+    "build.ts"
+  ],
   "imports": {
     "@nodef/extra-sleep": "jsr:@nodef/extra-sleep@^0.1.2",
     "@std/assert": "jsr:@std/assert@^1.0.19",

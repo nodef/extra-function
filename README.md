@@ -2,7 +2,7 @@ Functions are one of the fundamental building blocks in JavaScript.
 
 ▌
 📦 [JSR](https://jsr.io/@nodef/extra-function),
-📦 [NPM](https://www.npmjs.com/package/extra-function),
+📦 [NPM](https://www.npmjs.com/package/@nodef/extra-function),
 📰 [Docs](https://jsr.io/@nodef/extra-function/doc).
 
 It is similar to a procedure—a set of statements that performs a task or calculates a
